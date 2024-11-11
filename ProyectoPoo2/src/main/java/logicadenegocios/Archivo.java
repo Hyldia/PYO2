@@ -18,8 +18,11 @@ public class Archivo {
   private String atributos;
   private LocalDate fechaCreacion;
   
-  public Archivo() {
-    
+  public Archivo(String pNombre, String pRuta, String pTipo) {
+    pNombre = nombre;
+    pRuta = ruta;
+    pTipo = tipo;
+    fechaCreacion = LocalDate.now();
   }
   
   public String eliminar() {
@@ -31,6 +34,10 @@ public class Archivo {
   }
   
   public String getInformacion() {
-    return "hello";
+    String info = "Nombre del archivo: " + nombre + "\n";
+    info += "Tipo: " + tipo + "\n";
+    info += "Ubicación: " + ruta + "\n";
+    info += "Creación: " + fechaCreacion + "\n";
+    return info;
   }
 }
