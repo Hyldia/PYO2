@@ -103,7 +103,7 @@ public class Inicio extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    Administrador admi = new Administrador();
+    NewAdministrador admi = new NewAdministrador();
     admi.setVisible(true); //abre la nueva ventana
     this.dispose(); //cierra la ventana ac
   }//GEN-LAST:event_jButton1ActionPerformed
