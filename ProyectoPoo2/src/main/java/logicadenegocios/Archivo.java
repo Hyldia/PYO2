@@ -19,9 +19,9 @@ public class Archivo {
   private LocalDate fechaCreacion;
   
   public Archivo(String pNombre, String pRuta, String pTipo) {
-    pNombre = nombre;
-    pRuta = ruta;
-    pTipo = tipo;
+    nombre = pNombre;
+    ruta = pRuta;
+    tipo = pTipo;
     fechaCreacion = LocalDate.now();
   }
   
@@ -33,7 +33,13 @@ public class Archivo {
     
   }
   
-  public String getInformacion() {
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
+
+  
+  @Override
+  public String toString() {
     String info = "Nombre del archivo: " + nombre + "\n";
     info += "Tipo: " + tipo + "\n";
     info += "Ubicación: " + ruta + "\n";

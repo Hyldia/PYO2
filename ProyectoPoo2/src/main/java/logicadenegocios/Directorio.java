@@ -4,8 +4,10 @@
  */
 package logicadenegocios;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
+
 
 /**
  * Clase que representa la abstracción de un Directorio
@@ -16,6 +18,7 @@ public class Directorio {
   
   private List<Archivo> archivos;
   private int tamaño;
+   private LocalDate fechaCreacion;
   
   public Directorio() {
     archivos = new ArrayList<>();
@@ -41,4 +44,9 @@ public class Directorio {
   public void copiarDirectorio(String pRutaDestino) {
     
   }
+  
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
+
 }

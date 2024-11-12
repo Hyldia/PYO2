@@ -6,27 +6,25 @@
 package logicadenegocios;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Usuario
  */
 public class UnidadLogica {
-  private String ruta;
   private File unidad;
   
   /**
    * Contructor Sis e ingresa una ruta incia en la unidad de la ruta especificada
    * Si no incia en la unidad C: de forma predeterminada
-   * @param pRuta 
+   * 
    */
-  public UnidadLogica(String pRuta){
-    pRuta = ruta;
-    if (ruta == null || ruta.isEmpty()) {
-      unidad = new File("c:/");
-    }else{
-      unidad = new File(ruta);
-    }
+  public UnidadLogica(){
+    unidad = new File("c:\\");
   }
   
   /**
@@ -53,6 +51,46 @@ public class UnidadLogica {
   
   public long getEspacioUsado(){
     return getEspacioTotal() - getEspacioLibre();
+  }
+  
+  
+  public String getFechaCreacion(File contenido) {
+    long fecha = contenido.lastModified();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    return sdf.format(fecha);
+  }
+  
+  
+  /**
+   * Obtiene el contenido del direcctorio especificado si no
+   * De la unidad C:
+   * @param pRuta
+   * @return La lista de nombres de los archivos y directorios
+   */
+  public List<String> getContenido(String pRuta) {
+    List<String> contenidos = new ArrayList<>();
+    File unidadDir = new File("C:\\");
+    //Verificar que la unidad existe
+    if (unidadDir.exists() && unidadDir.isDirectory()) {
+      File[] listaArchivos = unidadDir.listFiles();
+      //Si se peudo acceder agrega la infromaciónd e los archvios y directorios
+      if (listaArchivos != null) {
+        for (File contenido : listaArchivos) {
+          //Comprobar si el directorio o archivo
+          String tipo = contenido.isDirectory()? "[Directorio]" : "[Archivo]";
+          //fecha de creación
+          String fechaCreacion = getFechaCreacion(contenido);
+          //tamaño
+          String tamano = contenido.isDirectory()? "N/A" : bytesAGigabytes(contenido.length()) + "GB";
+          contenidos.add(tipo + " " + contenido.getName() + " - Tamaño: " + tamano + " - Fecha de creación: " + fechaCreacion);
+        }
+      }else{
+        contenidos.add("No se peude acceder al contenido");
+      }
+    }else{
+      contenidos.add("La unidad C:\\ no exixste");
+    }
+    return contenidos;
   }
   
   /**
