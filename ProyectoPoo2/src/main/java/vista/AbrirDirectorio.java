@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -91,6 +92,9 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         String tamaño = arch.isFile() ? String.format("%.2f MB",
            arch.length() / (1024.0 * 1024.0)) : "N/A";
         String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
+        /*ImageIcon icono = arch.isDirectory() ? new ImageIcon(getClass(
+        ).getResource("/icons/folder.png")) : new ImageIcon(getClass(
+        ).getResource("/icons/file.png"));*/
         modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
           fechaCreacion});
       }
