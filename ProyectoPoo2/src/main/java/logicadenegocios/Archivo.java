@@ -25,6 +25,10 @@ public class Archivo {
     fechaCreacion = LocalDate.now();
   }
   
+  public Archivo () {
+    
+  }
+  
   public String eliminar() {
     return "hello";
   }
