@@ -39,6 +39,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     };
     tablaDeArchivos.setModel(modelo);
     tablaDeArchivos.addMouseListener(new MouseAdapter() {
+      @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           int filaSeleccionada = tablaDeArchivos.getSelectedRow();
@@ -60,8 +61,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     comboBox.removeAllItems();
 
     listarUnidadesLogicas();
-    mostrarTabla();
-
+    comboBox.setSelectedIndex(0);
   }
 
   public final void listarUnidadesLogicas() {
@@ -77,10 +77,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         }
       });
     }
-  }
-
-  public final void mostrarTabla() {
-
   }
 
   public final void cambiarDirectorio(File pNuevoDirectorio) throws Exception {
@@ -116,6 +112,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     comboBox = new javax.swing.JComboBox<>();
     jLabel1 = new javax.swing.JLabel();
     botonRetroceder = new javax.swing.JButton();
+    crearDirectorio = new javax.swing.JButton();
+    consultarInfo = new javax.swing.JButton();
+    eliminar = new javax.swing.JButton();
+    copiar = new javax.swing.JButton();
+    abrirArchivo = new javax.swing.JButton();
+    consultarPropiedades = new javax.swing.JButton();
+    jLabel2 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,11 +138,16 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     jScrollPane1.setViewportView(tablaDeArchivos);
 
     comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    comboBox.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        comboBoxActionPerformed(evt);
+      }
+    });
 
     jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
     jLabel1.setText("Unidad Lógica");
 
-    botonRetroceder.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+    botonRetroceder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
     botonRetroceder.setText("Retroceder");
     botonRetroceder.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,37 +155,124 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     });
 
+    crearDirectorio.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    crearDirectorio.setText("Crear directorio");
+    crearDirectorio.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        crearDirectorioActionPerformed(evt);
+      }
+    });
+
+    consultarInfo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    consultarInfo.setText("Consultar información");
+    consultarInfo.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        consultarInfoActionPerformed(evt);
+      }
+    });
+
+    eliminar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    eliminar.setText("Eliminar");
+    eliminar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        eliminarActionPerformed(evt);
+      }
+    });
+
+    copiar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    copiar.setText("Copiar");
+    copiar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        copiarActionPerformed(evt);
+      }
+    });
+
+    abrirArchivo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    abrirArchivo.setText("Abrir");
+    abrirArchivo.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        abrirArchivoActionPerformed(evt);
+      }
+    });
+
+    consultarPropiedades.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    consultarPropiedades.setText("Consultar propiedades");
+    consultarPropiedades.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        consultarPropiedadesActionPerformed(evt);
+      }
+    });
+
+    jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+    jLabel2.setText("Archivos y Directorios");
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
-        .addContainerGap()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(297, 297, 297)
+            .addContainerGap()
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(jLabel1)
+                  .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(copiar)
+                    .addComponent(abrirArchivo))))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(consultarPropiedades))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(crearDirectorio))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(consultarInfo))))
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(291, 291, 291)
             .addComponent(botonRetroceder)))
-        .addGap(36, 36, 36)
-        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jLabel1))
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap(18, Short.MAX_VALUE))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(32, 32, 32)
+            .addGap(26, 26, 26)
             .addComponent(jLabel1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(consultarPropiedades, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
+            .addComponent(jLabel2)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(12, 12, 12)
+            .addComponent(crearDirectorio)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(botonRetroceder)
+        .addGap(18, 18, 18)
+        .addComponent(botonRetroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(19, Short.MAX_VALUE))
     );
 
@@ -205,6 +300,34 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     }
   }//GEN-LAST:event_botonRetrocederActionPerformed
+
+  private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_comboBoxActionPerformed
+
+  private void crearDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDirectorioActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_crearDirectorioActionPerformed
+
+  private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_consultarInfoActionPerformed
+
+  private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_eliminarActionPerformed
+
+  private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_copiarActionPerformed
+
+  private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_abrirArchivoActionPerformed
+
+  private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_consultarPropiedadesActionPerformed
 
   /**
    * @param args the command line arguments
@@ -242,9 +365,16 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton abrirArchivo;
   private javax.swing.JButton botonRetroceder;
   private javax.swing.JComboBox<String> comboBox;
+  private javax.swing.JButton consultarInfo;
+  private javax.swing.JButton consultarPropiedades;
+  private javax.swing.JButton copiar;
+  private javax.swing.JButton crearDirectorio;
+  private javax.swing.JButton eliminar;
   private javax.swing.JLabel jLabel1;
+  private javax.swing.JLabel jLabel2;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JTable tablaDeArchivos;
