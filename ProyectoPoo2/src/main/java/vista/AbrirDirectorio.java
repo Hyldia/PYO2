@@ -10,8 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
+//import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -59,8 +60,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         }
       }
     });
-    comboBox.removeAllItems();
 
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    tablaDeArchivos.setRowSorter(sorter);
+    comboBox.removeAllItems();
     listarUnidadesLogicas();
     comboBox.setSelectedIndex(0);
   }
