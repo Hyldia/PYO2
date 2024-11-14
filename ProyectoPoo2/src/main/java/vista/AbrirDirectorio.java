@@ -8,6 +8,9 @@ import java.io.File;
 import controlador.Controlador;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //import javax.swing.ImageIcon;
@@ -64,9 +67,60 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
     TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
     tablaDeArchivos.setRowSorter(sorter);
+    tablaDeArchivos.getTableHeader().addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        int column = tablaDeArchivos.columnAtPoint(e.getPoint());
+        if (e.getClickCount() == 2) {
+          if (column == 3) {
+            try {
+              ordenarPorFechaDeCreacion();
+            } catch (Exception ex) {
+              Logger.getLogger(AbrirDirectorio.class.getName()
+              ).log(Level.SEVERE, null, ex);
+            }
+          }
+        }
+      }
+    });
     comboBox.removeAllItems();
     listarUnidadesLogicas();
     comboBox.setSelectedIndex(0);
+  }
+
+  public final void ordenarPorFechaDeCreacion() throws Exception {
+    System.out.println("Entre");
+    File[] archivosDirectorio = controlador.conseguirListaArchivos(directorioActual);
+
+    // Ordenar usando Arrays.sort basado en el año de la fecha de creación
+    Arrays.sort(archivosDirectorio, (a, b) -> {
+      try {
+        String fechaA = controlador.getFechaCreacionArchivo(a);
+        String fechaB = controlador.getFechaCreacionArchivo(b);
+
+        if (fechaA == null || fechaB == null || fechaA.isEmpty() || fechaB.isEmpty()) {
+          return 0; // Si alguna fecha es inválida, no se altera el orden
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        int añoA = LocalDateTime.parse(fechaA, formatter).getYear();
+        int añoB = LocalDateTime.parse(fechaB, formatter).getYear();
+
+        return Integer.compare(añoA, añoB);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return 0; // En caso de error, no se altera el orden
+      }
+    });
+
+    // Reinicializar la tabla
+    modelo.setRowCount(0);
+    for (File arch : archivosDirectorio) {
+      String tipo = arch.isDirectory() ? "Directorio" : "Archivo";
+      String tamaño = arch.isFile() ? String.format("%.2f MB", arch.length() / (1024.0 * 1024.0)) : "N/A";
+      String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
+      modelo.addRow(new Object[]{tipo, arch.getName(), tamaño, fechaCreacion});
+    }
   }
 
   public final void listarUnidadesLogicas() {
@@ -127,6 +181,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     abrirArchivo = new javax.swing.JButton();
     consultarPropiedades = new javax.swing.JButton();
     jLabel2 = new javax.swing.JLabel();
+    salir = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -214,6 +269,14 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
     jLabel2.setText("Archivos y Directorios");
 
+    salir.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    salir.setText("Salir");
+    salir.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        salirActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -222,7 +285,12 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(291, 291, 291)
+            .addComponent(botonRetroceder)))
+        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(jPanel1Layout.createSequentialGroup()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
@@ -233,9 +301,11 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                 .addGap(57, 57, 57)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(copiar)
-                    .addComponent(abrirArchivo))))
+                  .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(4, 4, 4)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                      .addComponent(copiar)
+                      .addComponent(abrirArchivo)))))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consultarPropiedades))
@@ -247,41 +317,43 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                 .addComponent(crearDirectorio))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consultarInfo))))
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(291, 291, 291)
-            .addComponent(botonRetroceder)))
-        .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(consultarInfo)))
+            .addContainerGap(18, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(salir)
+            .addGap(82, 82, 82))))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
-        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(26, 26, 26)
-            .addComponent(jLabel1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(consultarPropiedades, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
-            .addComponent(jLabel2)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(12, 12, 12)
-            .addComponent(crearDirectorio)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        .addContainerGap()
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(botonRetroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(19, Short.MAX_VALUE))
+      .addGroup(jPanel1Layout.createSequentialGroup()
+        .addGap(26, 26, 26)
+        .addComponent(jLabel1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(consultarPropiedades, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
+        .addComponent(jLabel2)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(12, 12, 12)
+        .addComponent(crearDirectorio)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(salir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(29, 29, 29))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -337,6 +409,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     // TODO add your handling code here:
   }//GEN-LAST:event_consultarPropiedadesActionPerformed
 
+  private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
+    System.exit(0);
+  }//GEN-LAST:event_salirActionPerformed
+
   /**
    * @param args the command line arguments
    */
@@ -385,6 +461,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   private javax.swing.JLabel jLabel2;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JButton salir;
   private javax.swing.JTable tablaDeArchivos;
   // End of variables declaration//GEN-END:variables
 }
