@@ -8,9 +8,9 @@ import java.io.File;
 import controlador.Controlador;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
+//import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //import javax.swing.ImageIcon;
@@ -89,38 +89,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final void ordenarPorFechaDeCreacion() throws Exception {
-    System.out.println("Entre");
-    File[] archivosDirectorio = controlador.conseguirListaArchivos(directorioActual);
-
-    // Ordenar usando Arrays.sort basado en el año de la fecha de creación
-    Arrays.sort(archivosDirectorio, (a, b) -> {
-      try {
-        String fechaA = controlador.getFechaCreacionArchivo(a);
-        String fechaB = controlador.getFechaCreacionArchivo(b);
-
-        if (fechaA == null || fechaB == null || fechaA.isEmpty() || fechaB.isEmpty()) {
-          return 0; // Si alguna fecha es inválida, no se altera el orden
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        int añoA = LocalDateTime.parse(fechaA, formatter).getYear();
-        int añoB = LocalDateTime.parse(fechaB, formatter).getYear();
-
-        return Integer.compare(añoA, añoB);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return 0; // En caso de error, no se altera el orden
-      }
-    });
-
-    // Reinicializar la tabla
-    modelo.setRowCount(0);
-    for (File arch : archivosDirectorio) {
-      String tipo = arch.isDirectory() ? "Directorio" : "Archivo";
-      String tamaño = arch.isFile() ? String.format("%.2f MB", arch.length() / (1024.0 * 1024.0)) : "N/A";
-      String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
-      modelo.addRow(new Object[]{tipo, arch.getName(), tamaño, fechaCreacion});
-    }
+   
   }
 
   public final void listarUnidadesLogicas() {
