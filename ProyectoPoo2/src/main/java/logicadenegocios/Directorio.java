@@ -19,10 +19,12 @@ public class Directorio {
   private List<Archivo> archivos;
   private int tamaño;
    private LocalDate fechaCreacion;
-  
+
+   /**
+    * Método constructor de la clase Directorio
+    */
   public Directorio() {
     archivos = new ArrayList<>();
-    
   }
   
   public void listarContenido() {

@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author Usuario
+ * Clase que representa la abstracción de una Unidad Lógica
+ * 
+ * @author Hyldia T., Berenice A. & Deywenie S.
  */
 public class UnidadLogica {
   private File unidad;
@@ -81,8 +82,10 @@ public class UnidadLogica {
           //fecha de creación
           String fechaCreacion = getFechaCreacion(contenido);
           //tamaño
-          String tamano = contenido.isDirectory()? "N/A" : bytesAGigabytes(contenido.length()) + "GB";
-          contenidos.add(tipo + " " + contenido.getName() + " - Tamaño: " + tamano + " - Fecha de creación: " + fechaCreacion);
+          String tamano = contenido.isDirectory()? "N/A" : bytesAGigabytes(
+             contenido.length()) + "GB";
+          contenidos.add(tipo + " " + contenido.getName() + " - Tamaño: " + 
+             tamano + " - Fecha de creación: " + fechaCreacion);
         }
       }else{
         contenidos.add("No se peude acceder al contenido");
@@ -100,9 +103,9 @@ public class UnidadLogica {
   @Override
   public String toString() {
     String info = "Nombre de la unidad: " + getNombre() + "\n";
-    info += "Capacidad total: " + bytesAGigabytes(getEspacioTotal()) + "GB" + "\n";
-    info += "Espacio libre: " + bytesAGigabytes(getEspacioLibre()) + "gb" + "\n";
-    info += "Espacio Usado: " + bytesAGigabytes(getEspacioUsado()) + "GB" + "\n";
+    info += "Capacidad total: " + bytesAGigabytes(getEspacioTotal())+"GB"+"\n";
+    info += "Espacio libre: " + bytesAGigabytes(getEspacioLibre())+"GB"+"\n";
+    info += "Espacio Usado: " + bytesAGigabytes(getEspacioUsado())+"GB"+"\n";
     return info;
   }
 }

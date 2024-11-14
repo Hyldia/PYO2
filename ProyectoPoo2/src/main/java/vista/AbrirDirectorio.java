@@ -30,6 +30,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
    */
   public AbrirDirectorio() {
     initComponents();
+    setResizable(false);
     controlador = new Controlador();
 
     String[] columnas = {"Tipo", "Nombre", "Tamaño", "Fecha de Creación"};

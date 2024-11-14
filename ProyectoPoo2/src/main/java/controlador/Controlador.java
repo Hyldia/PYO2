@@ -15,8 +15,9 @@ import logicadenegocios.Directorio;
 import java.util.List;
 
 /**
+ * Clase que representa la abstracción de un Controlador
  *
- * @author Usuario
+ * @author Hyldia T., Berenice A. & Deywenie S.
  */
 public class Controlador {
 
@@ -32,13 +33,36 @@ public class Controlador {
   }
 
   // Archivos y directorios
+  /**
+   * Método encargado de conseguir los archivos de la unidad lógica C
+   *
+   * @param pDirectorio
+   * @return Un arreglo con los archivos
+   * @throws Exception
+   */
   public File[] conseguirListaArchivos(File pDirectorio) throws Exception {
-    File[] archivos = pDirectorio.listFiles();
-    if (archivos != null) {
-      return archivos;
-    } else {
-      throw new Exception("El directorio se encuentra vacío");
+    if (pDirectorio == null) {
+      throw new IllegalArgumentException("El directorio no puede ser nulo.");
     }
+    if (!pDirectorio.exists() || !pDirectorio.isDirectory()) {
+      throw new IllegalArgumentException("El archivo proporcionado no es un "
+         + "directorio válido.");
+    }
+    File[] archivos = pDirectorio.listFiles();
+    if (archivos == null || archivos.length == 0) {
+      throw new Exception("El directorio está vacío o no se pudo acceder.");
+    }
+    return archivos;
+  }
+  
+  /**
+   * Méto encarga de listar las unidades lógicas
+   * 
+   * @return un arreglo con las unidades lógicas
+   */
+  public File[] listarUnidadesLogicas() {
+    File[] unidades = File.listRoots();
+    return unidades;
   }
 
   public String getFechaCreacionArchivo(File pArchivo) {
@@ -60,10 +84,5 @@ public class Controlador {
       throw new IllegalArgumentException("La ruta proporcionada no es válida");
     }
     return unidadLogica.getContenido(pRuta);
-  }
-
-  public File[] listarUnidadesLogicas() {
-    File[] unidades = File.listRoots();
-    return unidades;
   }
 }

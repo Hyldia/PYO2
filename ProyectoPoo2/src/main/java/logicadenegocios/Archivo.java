@@ -18,6 +18,13 @@ public class Archivo {
   private String atributos;
   private LocalDate fechaCreacion;
   
+  /**
+   * Método constructor de la clase Archivo
+   * 
+   * @param pNombre
+   * @param pRuta
+   * @param pTipo 
+   */
   public Archivo(String pNombre, String pRuta, String pTipo) {
     nombre = pNombre;
     ruta = pRuta;
@@ -25,6 +32,9 @@ public class Archivo {
     fechaCreacion = LocalDate.now();
   }
   
+  /**
+   * Método constructor de la clase Archivo
+   */
   public Archivo () {
     
   }
