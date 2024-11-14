@@ -115,7 +115,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       File[] archivosDirectorio = controlador.conseguirListaArchivos(
          pNuevoDirectorio);
       for (File arch : archivosDirectorio) {
-        String tipo = arch.isDirectory() ? "Directorio" : "Archivo";
+        String tipo = arch.isDirectory() ? "Carpeta" : "Archivo";
         String tamaño = arch.isFile() ? String.format("%.2f MB",
            arch.length() / (1024.0 * 1024.0)) : "N/A";
         String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
