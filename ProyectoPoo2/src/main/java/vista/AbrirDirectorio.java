@@ -6,6 +6,8 @@ package vista;
 
 import java.io.File;
 import controlador.Controlador;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 //import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 //import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -55,7 +58,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           if (filaSeleccionada >= 0) {
             String tipo = (String) modelo.getValueAt(filaSeleccionada, 0);
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
-            if (tipo.equals("Directorio")) {
+            if (tipo.equals("Carpeta")) {
               try {
                 cambiarDirectorio(new File(directorioActual, nombre));
               } catch (Exception ex) {
@@ -408,8 +411,17 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     // TODO add your handling code here:
   }//GEN-LAST:event_consultarInfoActionPerformed
 
+  //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    // TODO add your handling code here:
+    tablaDeArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    eliminar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent ae) {
+        if (tablaDeArchivos.getSelectedRow() != -1) {
+          modelo.removeRow(tablaDeArchivos.getSelectedRow());
+        }
+      }
+    });
   }//GEN-LAST:event_eliminarActionPerformed
 
   private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
