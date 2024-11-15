@@ -132,7 +132,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final boolean validarPalabra(String pPalabra) {
-    String regex = "^(?=.*\\d)[A-Za-z\\d]{6,64}$";
+    String regex = "^[A-Za-z\\\\d]{1,64}$";
     Pattern patron = Pattern.compile(regex);
     Matcher matcher = patron.matcher(pPalabra);
     return matcher.matches();
