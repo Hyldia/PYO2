@@ -13,6 +13,9 @@ import java.awt.event.MouseEvent;
 //import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 //import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -89,7 +92,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final void ordenarPorFechaDeCreacion() throws Exception {
-   
+
   }
 
   public final void listarUnidadesLogicas() {
@@ -126,6 +129,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           fechaCreacion});
       }
     }
+  }
+
+  public final boolean validarPalabra(String pPalabra) {
+    String regex = "^(?=.*\\d)[A-Za-z\\d]{6,64}$";
+    Pattern patron = Pattern.compile(regex);
+    Matcher matcher = patron.matcher(pPalabra);
+    return matcher.matches();
   }
 
   /**
@@ -355,7 +365,43 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }//GEN-LAST:event_comboBoxActionPerformed
 
   private void crearDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDirectorioActionPerformed
-    // TODO add your handling code here:
+    //String nuevoDirectorio = "Por favor ingrese un nombre válido";
+    boolean datoValido = false;
+    while (!datoValido) {
+      String nombreDir = JOptionPane.showInputDialog(this,
+         "Ingrese el nombre del nuevo directorio");
+      if (nombreDir == null || nombreDir.isBlank()) {
+        JOptionPane.showMessageDialog(this, "El nombre del directorio "
+           + "tiene que ser distinto a vacío.",
+           "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      } else if (!validarPalabra(nombreDir)) {
+        JOptionPane.showMessageDialog(this, "El nombre del directorio no"
+           + " cumple con los requisitos.",
+           "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      }
+      File nuevoDirectorio = new File("C:\\" + nombreDir);
+
+      if (nuevoDirectorio.exists()) {
+        JOptionPane.showMessageDialog(this, "El directorio ya existe.",
+           "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      } else {
+        boolean creado = nuevoDirectorio.mkdir(); //True si el directorio ya está creado
+        if (creado) {
+          JOptionPane.showMessageDialog(this, "El directorio fue creado "
+             + "exitosamente.", "Información",
+             JOptionPane.INFORMATION_MESSAGE);
+          break;
+        } else {
+          JOptionPane.showMessageDialog(this, "No se pudo crear el directorio. "
+             + "Por favor verifique los permisos.", "Información",
+             JOptionPane.ERROR_MESSAGE);
+          break;
+        }
+      }
+    }
   }//GEN-LAST:event_crearDirectorioActionPerformed
 
   private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
