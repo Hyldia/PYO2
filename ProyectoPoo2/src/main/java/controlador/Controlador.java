@@ -50,7 +50,7 @@ public class Controlador {
     }
     File[] archivos = pDirectorio.listFiles();
     if (archivos == null || archivos.length == 0) {
-      throw new Exception("El directorio está vacío o no se pudo acceder.");
+      throw new IOException("El directorio está vacío o no se pudo acceder.");
     }
     return archivos;
   }

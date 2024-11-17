@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 //import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
 //import java.util.Arrays;
@@ -118,18 +119,23 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       directorioActual = pNuevoDirectorio;
       modelo.setRowCount(0);
 
-      File[] archivosDirectorio = controlador.conseguirListaArchivos(
-         pNuevoDirectorio);
-      for (File arch : archivosDirectorio) {
-        String tipo = arch.isDirectory() ? "Carpeta" : "Archivo";
-        String tamaño = arch.isFile() ? String.format("%.2f MB",
-           arch.length() / (1024.0 * 1024.0)) : "N/A";
-        String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
-        /*ImageIcon icono = arch.isDirectory() ? new ImageIcon(getClass(
+      try {
+        File[] archivosDirectorio = controlador.conseguirListaArchivos(
+           pNuevoDirectorio);
+        for (File arch : archivosDirectorio) {
+          String tipo = arch.isDirectory() ? "Carpeta" : "Archivo";
+          String tamaño = arch.isFile() ? String.format("%.2f MB",
+             arch.length() / (1024.0 * 1024.0)) : "N/A";
+          String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
+          /*ImageIcon icono = arch.isDirectory() ? new ImageIcon(getClass(
         ).getResource("/icons/folder.png")) : new ImageIcon(getClass(
         ).getResource("/icons/file.png"));*/
-        modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
-          fechaCreacion});
+          modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
+            fechaCreacion});
+        }
+      } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "La carpeta no posee archivo.",
+           "Información", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
@@ -428,28 +434,28 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     });
   }//GEN-LAST:event_eliminarActionPerformed
 
-  private void borrarArchivo (String pArchivo) {
+  private void borrarArchivo(String pArchivo) {
     String unidad = (String) comboBox.getSelectedItem();
     boolean eliminar = false;
-    System.out.println(unidad + pArchivo);
+    //System.out.println(unidad + pArchivo);
     File archivo = new File(unidad + pArchivo);
-    
-    while(!eliminar) {
+
+    while (!eliminar) {
       if (archivo.delete()) {
         JOptionPane.showMessageDialog(this, "El archivo fue eliminado "
-             + "exitosamente.", "Información",
-             JOptionPane.INFORMATION_MESSAGE);
+           + "exitosamente.", "Información",
+           JOptionPane.INFORMATION_MESSAGE);
         eliminar = archivo.exists();
-        System.out.println(eliminar);
+        //System.out.println(eliminar);
         break;
       } else {
         JOptionPane.showMessageDialog(this, "El archivo no pudo ser eliminado.",
-           "Información", JOptionPane.INFORMATION_MESSAGE);
+           "Información", JOptionPane.ERROR_MESSAGE);
         break;
       }
     }
   }
-  
+
   private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_copiarActionPerformed
