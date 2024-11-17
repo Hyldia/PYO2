@@ -500,8 +500,20 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     // TODO add your handling code here:
   }//GEN-LAST:event_copiarActionPerformed
 
+  
   private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-    // TODO add your handling code here:
+    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
+      if (archivoSeleccionado.exists()) {
+            controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
+        } else {
+            JOptionPane.showMessageDialog(this, "El archivo no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
   }//GEN-LAST:event_abrirArchivoActionPerformed
 
   private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed

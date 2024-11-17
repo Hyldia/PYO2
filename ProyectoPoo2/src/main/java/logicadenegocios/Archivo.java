@@ -4,6 +4,9 @@
  */
 package logicadenegocios;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -51,6 +54,24 @@ public class Archivo {
     return fechaCreacion;
   }
 
+  public void abrirArchivo(String ruta) throws IOException {
+    if (Desktop.isDesktopSupported()) {
+      Desktop desktop = Desktop.getDesktop();
+      File archivo = new File(ruta);
+      
+      if (archivo.exists()) {
+        try {
+          desktop.open(archivo);
+        }catch (IOException e){
+          throw new IOException("No se puede abrir el archivo por un error en el sistema.");
+        }
+      }else {
+        throw new IOException("El archivo no existe en la ruta dada.");
+      }
+    }else {
+      throw new IOException("El sistema no soporta abrir el archivo seleccionado");
+    }
+  }
   
   @Override
   public String toString() {
