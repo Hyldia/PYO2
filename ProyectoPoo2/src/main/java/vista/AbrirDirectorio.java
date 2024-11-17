@@ -11,9 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-//import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
-//import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -22,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 //import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -51,6 +51,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     };
     tablaDeArchivos.setModel(modelo);
+    tablaDeArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     tablaDeArchivos.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -77,9 +78,16 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     tablaDeArchivos.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        int column = tablaDeArchivos.columnAtPoint(e.getPoint());
+        int columna = tablaDeArchivos.columnAtPoint(e.getPoint());
         if (e.getClickCount() == 2) {
-          if (column == 3) {
+          if (columna == 2) {
+            try {
+              ordenarPorTamaño();
+            } catch (Exception ex) {
+              Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          }
+          if (columna == 3) {
             try {
               ordenarPorFechaDeCreacion();
             } catch (Exception ex) {
@@ -95,8 +103,43 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     comboBox.setSelectedIndex(0);
   }
 
-  public final void ordenarPorFechaDeCreacion() throws Exception {
+  public final void ordenarPorTamaño() throws Exception {
+    tablaDeArchivos.setAutoCreateRowSorter(true);
+    TableRowSorter<TableModel> sorter = new TableRowSorter<>(
+       tablaDeArchivos.getModel());
+    tablaDeArchivos.setRowSorter(sorter);
+    int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
+       "Tamaño");
+    sorter.setComparator(indice, (String tamaño1, String tamaño2) -> {
+      double tamañoA = tamañoEnDouble(tamaño1);
+      double tamañoB = tamañoEnDouble(tamaño2);
+      return Double.compare(tamañoA, tamañoB);
+    });
+  }
 
+  private double tamañoEnDouble(String pTamaño) {
+    try {
+      String numero = pTamaño.replaceAll("[^0-9.]", "");
+      return Double.parseDouble(numero);
+    } catch (NumberFormatException e) {
+      return 0;
+    }
+  }
+
+  private void ordenarPorFechaDeCreacion() throws Exception {
+    tablaDeArchivos.setAutoCreateRowSorter(true);
+    TableRowSorter<TableModel> sorter = new TableRowSorter<>(
+       tablaDeArchivos.getModel());
+    tablaDeArchivos.setRowSorter(sorter);
+    int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
+       "Fecha de Creación");
+    sorter.setComparator(indice, (String fecha1, String fecha2) -> {
+      DateTimeFormatter formato = DateTimeFormatter.ofPattern(
+         "dd/MM/yyyy HH:mm:ss");
+      LocalDateTime fechaA = LocalDateTime.parse(fecha1, formato);
+      LocalDateTime fechaB = LocalDateTime.parse(fecha2, formato);
+      return fechaA.compareTo(fechaB);
+    });
   }
 
   public final void listarUnidadesLogicas() {
@@ -419,13 +462,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
   //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    tablaDeArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     eliminar.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent ae) {
         if (tablaDeArchivos.getSelectedRow() != -1) {
           int fila = tablaDeArchivos.getSelectedRow();
-          String nombreArchivo = tablaDeArchivos.getModel().getValueAt(fila, 1).toString();
+          String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
+             fila, 1).toString();
           //System.out.println(nombreArchivo);
           borrarArchivo(nombreArchivo);
           modelo.removeRow(tablaDeArchivos.getSelectedRow());

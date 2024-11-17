@@ -78,6 +78,10 @@ public class Controlador {
       return "No disponible";
     }
   }
+  
+  public double getTamañoArchivo(File pArchivo) {
+    return 0.0;
+  }
 
   public List<String> getContenido(String pRuta) {
     if (pRuta == null || pRuta.isEmpty()) {
