@@ -56,7 +56,7 @@ public class Controlador {
   }
   
   /**
-   * Méto encarga de listar las unidades lógicas
+   * Método encarga de listar las unidades lógicas
    * 
    * @return un arreglo con las unidades lógicas
    */

@@ -418,12 +418,38 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       @Override
       public void actionPerformed(ActionEvent ae) {
         if (tablaDeArchivos.getSelectedRow() != -1) {
+          int fila = tablaDeArchivos.getSelectedRow();
+          String nombreArchivo = tablaDeArchivos.getModel().getValueAt(fila, 1).toString();
+          //System.out.println(nombreArchivo);
+          borrarArchivo(nombreArchivo);
           modelo.removeRow(tablaDeArchivos.getSelectedRow());
         }
       }
     });
   }//GEN-LAST:event_eliminarActionPerformed
 
+  private void borrarArchivo (String pArchivo) {
+    String unidad = (String) comboBox.getSelectedItem();
+    boolean eliminar = false;
+    System.out.println(unidad + pArchivo);
+    File archivo = new File(unidad + pArchivo);
+    
+    while(!eliminar) {
+      if (archivo.delete()) {
+        JOptionPane.showMessageDialog(this, "El archivo fue eliminado "
+             + "exitosamente.", "Información",
+             JOptionPane.INFORMATION_MESSAGE);
+        eliminar = archivo.exists();
+        System.out.println(eliminar);
+        break;
+      } else {
+        JOptionPane.showMessageDialog(this, "El archivo no pudo ser eliminado.",
+           "Información", JOptionPane.INFORMATION_MESSAGE);
+        break;
+      }
+    }
+  }
+  
   private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_copiarActionPerformed
