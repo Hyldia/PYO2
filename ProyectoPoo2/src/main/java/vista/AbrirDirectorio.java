@@ -321,6 +321,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             .addGap(291, 291, 291)
             .addComponent(botonRetroceder)))
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(salir)
+            .addGap(82, 82, 82))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanel1Layout.createSequentialGroup()
@@ -329,14 +333,11 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                   .addComponent(jLabel1)
                   .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
               .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(copiar)
                   .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(4, 4, 4)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                      .addComponent(copiar)
-                      .addComponent(abrirArchivo)))))
+                  .addComponent(abrirArchivo)))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consultarPropiedades))
@@ -344,16 +345,12 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2))
               .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(crearDirectorio))
+                .addGap(18, 18, 18)
+                .addComponent(consultarInfo))
               .addGroup(jPanel1Layout.createSequentialGroup()
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consultarInfo)))
-            .addContainerGap(18, Short.MAX_VALUE))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(salir)
-            .addGap(82, 82, 82))))
+                .addGap(40, 40, 40)
+                .addComponent(crearDirectorio)))
+            .addContainerGap(40, Short.MAX_VALUE))))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,9 +375,9 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(12, 12, 12)
-        .addComponent(crearDirectorio)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(crearDirectorio)
+        .addGap(12, 12, 12)
         .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(salir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -508,7 +505,17 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }//GEN-LAST:event_abrirArchivoActionPerformed
 
   private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed
-    // TODO add your handling code here:
+    String unidadSeleccioanda = (String) comboBox.getSelectedItem();
+    try {
+      String infoUnidad = controlador.infoUnidadLogica();
+      JOptionPane.showMessageDialog(this, infoUnidad, 
+         "Propiedades: " + unidadSeleccioanda,
+         JOptionPane.INFORMATION_MESSAGE);
+    }catch (Exception ex) {
+      JOptionPane.showMessageDialog(this,
+         "No se puede obtner la informaciónd e la unidad.", "Error",
+         JOptionPane.ERROR_MESSAGE);
+    }
   }//GEN-LAST:event_consultarPropiedadesActionPerformed
 
   private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed

@@ -31,8 +31,9 @@ public class Controlador {
     directorio = new Directorio();
 
   }
-
+  
   // Archivos y directorios
+  
   /**
    * Método encargado de conseguir los archivos de la unidad lógica C
    *
@@ -54,6 +55,9 @@ public class Controlador {
     }
     return archivos;
   }
+  
+  
+  // Unidad Lógica
   
   /**
    * Método encarga de listar las unidades lógicas
@@ -88,5 +92,9 @@ public class Controlador {
       throw new IllegalArgumentException("La ruta proporcionada no es válida");
     }
     return unidadLogica.getContenido(pRuta);
+  }
+  
+  public String infoUnidadLogica() {
+    return unidadLogica.toString();
   }
 }

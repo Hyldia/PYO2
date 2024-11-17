@@ -7,6 +7,10 @@ package logicadenegocios;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +38,30 @@ public class UnidadLogica {
    * @return El equivalente en gigabytes
    */
   public static double bytesAGigabytes(long bytes){
-    return (double) bytes /(1024 * 1024 * 1024);
+    return bytes /(1024 * 1024 * 1024);
+  }
+  
+  /**
+   * Formatea los bytes en grupos de tres con espacios como separadores.
+   * @param bytes
+   * @return Los bytes formateados con separadores de espacios
+   */
+  public static String formaBytes(long bytes) {
+    DecimalFormat formato = new DecimalFormat("###,###,###"); // Formato con separadores de miles
+    return formato.format(bytes); // Devuelve el valor formateado
+  }
+  
+  /**
+   * 
+   * @return 
+   */
+  public String getSistemaArchivos() {
+    try {
+      FileStore store = Files.getFileStore(Paths.get(unidad.getPath()));
+      return store.type();
+    }catch (Exception e) {
+      return "Desconocido";
+    }
   }
   
   //Metodos accesores
@@ -103,9 +130,10 @@ public class UnidadLogica {
   @Override
   public String toString() {
     String info = "Nombre de la unidad: " + getNombre() + "\n";
-    info += "Capacidad total: " + bytesAGigabytes(getEspacioTotal())+"GB"+"\n";
-    info += "Espacio libre: " + bytesAGigabytes(getEspacioLibre())+"GB"+"\n";
-    info += "Espacio Usado: " + bytesAGigabytes(getEspacioUsado())+"GB"+"\n";
+    info += "Sistema de archvios: " + getSistemaArchivos() + "\n";
+    info += "Capacidad total:" + "     " + formaBytes(getEspacioTotal()) + " bytes" + "           " + bytesAGigabytes(getEspacioTotal())+" GB"+"\n";
+    info += "Espacio libre:" + "          " + formaBytes(getEspacioLibre()) + " bytes" + "           " + bytesAGigabytes(getEspacioLibre())+" GB"+"\n";
+    info += "Espacio Usado:" + "      " + formaBytes(getEspacioUsado()) + " bytes" + "           " + bytesAGigabytes(getEspacioUsado())+" GB"+"\n";
     return info;
   }
 }
