@@ -57,7 +57,11 @@ public class Controlador {
     return archivos;
   }
   
-  public void abrirArchivo(String rutaArchivo) {
+    /**
+     *
+     * @param rutaArchivo
+     */
+    public void abrirArchivo(String rutaArchivo) {
     try {
       archivo.abrirArchivo(rutaArchivo);
     }catch (IOException e){
@@ -107,4 +111,106 @@ public class Controlador {
   public String infoUnidadLogica() {
     return unidadLogica.toString();
   }
-}
+  public String consultarInfoArchivo(File archivo) throws IOException {
+    if (archivo == null || !archivo.exists() || archivo.isDirectory()) {
+      throw new IllegalArgumentException("El archivo no es válido.");
+    }
+
+    // Obtener nombre y extensión del archivo
+    String nombreArchivo = archivo.getName();
+    String extension = nombreArchivo.contains(".")
+        ? nombreArchivo.substring(nombreArchivo.lastIndexOf('.') + 1)
+        : "Sin extensión";
+
+    // Construir la información del archivo
+    String info = "Nombre del archivo: " + nombreArchivo + "\n";
+    info += "Extensión: " + extension + "\n";
+    info += "Tamaño del archivo: " + (archivo.length() / 1024) + " KB\n";
+    info += "Ubicación del archivo: " + archivo.getAbsolutePath() + "\n";
+
+    // Obtener la fecha de creación del archivo
+    BasicFileAttributes atributos = Files.readAttributes(archivo.toPath(), BasicFileAttributes.class);
+    String fechaCreacion = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(atributos.creationTime().toMillis());
+    info += "Fecha de creación: " + fechaCreacion + "\n";
+
+    // Atributos del archivo (permisos)
+    info += "Atributos: ";
+    info += (archivo.canRead() ? "Lectura permitida, " : "Lectura no permitida, ");
+    info += (archivo.canWrite() ? "Escritura permitida, " : "Escritura no permitida, ");
+    info += (archivo.canExecute() ? "Ejecución permitida" : "Ejecución no permitida");
+
+    return info;
+  }
+
+  
+   public void abrirArchivo(String rutaArchivo) {
+    try {
+      archivo.abrirArchivo(rutaArchivo);
+    }catch (IOException e){
+      JOptionPane.showMessageDialog(null, "Error al abrir el archivo: " + e.getMessage(), 
+          "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+  
+  
+  
+  public String consultarinfoDirectorio(File directorio) throws IOException {
+    if (directorio == null) {
+        throw new IllegalArgumentException("El directorio proporcionado es nulo.");
+    }
+    if (!directorio.exists()) {
+        throw new IllegalArgumentException("El directorio no existe.");
+    }
+    if (!directorio.isDirectory()) {
+        throw new IllegalArgumentException("El archivo proporcionado no es un directorio.");
+    }
+
+    String info = "";
+    info += "Ruta del directorio: " + directorio.getAbsolutePath() + "\n";
+
+    long tamañoTotal = calcularTamañoDirectorio(directorio);
+    info += "Tamaño total del directorio: " + (tamañoTotal / (1024 * 1024)) + " MB\n";
+
+    File[] archivos = directorio.listFiles();
+    int cantidadArchivos = 0;
+    int cantidadDirectorios = 0;
+
+    if (archivos != null) {
+        for (File archivo : archivos) {
+            if (archivo.isDirectory()) {
+                cantidadDirectorios++;
+            } else {
+                cantidadArchivos++;
+            }
+        }
+     }
+
+    info += "Cantidad de archivos: " + cantidadArchivos + "\n";
+    info += "Cantidad de subdirectorios: " + cantidadDirectorios + "\n";
+
+    info += "Atributos: ";
+    info += (directorio.canRead() ? "Lectura permitida, " : "Lectura no permitida, ");
+    info += (directorio.canWrite() ? "Escritura permitida, " : "Escritura no permitida, ");
+    info += (directorio.canExecute() ? "Ejecución permitida" : "Ejecución no permitida");
+
+    return info;
+    }
+
+  private long calcularTamañoDirectorio(File directorio) {
+    long tamañoTotal = 0;
+    File[] archivos = directorio.listFiles();
+
+    if (archivos != null) {
+        for (File archivo : archivos) {
+            if (archivo.isDirectory()) {
+                tamañoTotal += calcularTamañoDirectorio(archivo);
+            } else {
+                tamañoTotal += archivo.length();
+            }
+        }
+    }
+
+    return tamañoTotal;
+    }
+
+ }
