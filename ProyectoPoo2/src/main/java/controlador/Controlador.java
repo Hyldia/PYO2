@@ -13,6 +13,7 @@ import logicadenegocios.UnidadLogica;
 import logicadenegocios.Archivo;
 import logicadenegocios.Directorio;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * Clase que representa la abstracción de un Controlador
@@ -54,6 +55,15 @@ public class Controlador {
       throw new IOException("El directorio está vacío o no se pudo acceder.");
     }
     return archivos;
+  }
+  
+  public void abrirArchivo(String rutaArchivo) {
+    try {
+      archivo.abrirArchivo(rutaArchivo);
+    }catch (IOException e){
+      JOptionPane.showMessageDialog(null, "Error al abrir el archivo: " + e.getMessage(), 
+          "Error", JOptionPane.ERROR_MESSAGE);
+    }
   }
   
   
