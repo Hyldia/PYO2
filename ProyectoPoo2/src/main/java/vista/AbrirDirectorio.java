@@ -476,7 +476,40 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }//GEN-LAST:event_crearDirectorioActionPerformed
 
   private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
-    // TODO add your handling code here:
+    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
+if (filaSeleccionada >= 0) {
+    String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+    File archivoSeleccionado = new File(directorioActual, nombreArchivo);
+
+    if (archivoSeleccionado.exists()) {
+        if (archivoSeleccionado.isFile()) {
+            try {
+                String mensaje = controlador.consultarInfoArchivo(archivoSeleccionado.getAbsolutePath());
+                JOptionPane.showMessageDialog(this, mensaje, "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error al obtener información del archivo.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (archivoSeleccionado.isDirectory()) {
+            try {
+                String mensaje = controlador.consultarinfoDirectorio(archivoSeleccionado.getAbsolutePath());
+                JOptionPane.showMessageDialog(this, mensaje, "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error al obtener información del directorio.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "El archivo no existe.", 
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this, "Seleccione un archivo para abrir.", 
+        "Advertencia", JOptionPane.WARNING_MESSAGE);
+}
+
   }//GEN-LAST:event_consultarInfoActionPerformed
 
   //// Solo se elimina el archivo de la tabla NO de la compu
