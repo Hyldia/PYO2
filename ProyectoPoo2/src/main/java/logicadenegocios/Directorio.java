@@ -51,8 +51,4 @@ public class Directorio {
     return fechaCreacion;
   }
 
-    public String getAbsolutePath() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }
