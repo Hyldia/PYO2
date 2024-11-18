@@ -33,20 +33,22 @@ public class Inicio extends javax.swing.JFrame {
     jButton1 = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setLocation(new java.awt.Point(250, 80));
+    setMinimumSize(new java.awt.Dimension(700, 600));
 
     jPanel1.setBackground(new java.awt.Color(204, 153, 255));
 
-    jLabel1.setBackground(new java.awt.Color(204, 102, 255));
+    jLabel1.setBackground(new java.awt.Color(204, 204, 255));
     jLabel1.setFont(new java.awt.Font("Bookman Old Style", 1, 36)); // NOI18N
     jLabel1.setText("Bienvenid@s");
     jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-    jLabel2.setBackground(new java.awt.Color(204, 102, 255));
+    jLabel2.setBackground(new java.awt.Color(204, 204, 255));
     jLabel2.setFont(new java.awt.Font("Bookman Old Style", 1, 36)); // NOI18N
     jLabel2.setText("Administrador de archivos HBD");
     jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-    jButton1.setBackground(new java.awt.Color(204, 102, 255));
+    jButton1.setBackground(new java.awt.Color(204, 204, 255));
     jButton1.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
     jButton1.setText("Ingresar");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
