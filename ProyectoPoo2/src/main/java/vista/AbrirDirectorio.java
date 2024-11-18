@@ -5,7 +5,12 @@
 package vista;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import controlador.Controlador;
+import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-//import javax.swing.ImageIcon;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -60,7 +65,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           if (filaSeleccionada >= 0) {
             String tipo = (String) modelo.getValueAt(filaSeleccionada, 0);
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
-            if (tipo.equals("Carpeta")) {
+            if (tipo.equals("Directorio")) {
               try {
                 cambiarDirectorio(new File(directorioActual, nombre));
               } catch (Exception ex) {
@@ -84,7 +89,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             try {
               ordenarPorTamaño();
             } catch (Exception ex) {
-              Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(AbrirDirectorio.class.getName()).log(
+                 Level.SEVERE, null, ex);
             }
           }
           if (columna == 3) {
@@ -166,18 +172,20 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         File[] archivosDirectorio = controlador.conseguirListaArchivos(
            pNuevoDirectorio);
         for (File arch : archivosDirectorio) {
-          String tipo = arch.isDirectory() ? "Carpeta" : "Archivo";
+
+          String tipo = arch.isDirectory() ? "Directorio" : "Archivo";
           String tamaño = arch.isFile() ? String.format("%.2f MB",
              arch.length() / (1024.0 * 1024.0)) : "N/A";
           String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
-          /*ImageIcon icono = arch.isDirectory() ? new ImageIcon(getClass(
-        ).getResource("/icons/folder.png")) : new ImageIcon(getClass(
-        ).getResource("/icons/file.png"));*/
+
+          //ImageIcon imagen = new ImageIcon(getClass().getResource("archivo.png"));
+          //Image imagenSize = imagen.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+          //ImageIcon imagenFinal = new ImageIcon(imagenSize);
           modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
             fechaCreacion});
         }
       } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "La carpeta no posee archivo.",
+        JOptionPane.showMessageDialog(this, "El directorio no posee archivos.",
            "Información", JOptionPane.ERROR_MESSAGE);
       }
     }
@@ -282,7 +290,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     });
 
     abrirArchivo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-    abrirArchivo.setText("Abrir");
+    abrirArchivo.setText("Abrir archivo");
     abrirArchivo.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         abrirArchivoActionPerformed(evt);
@@ -331,26 +339,30 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(jLabel1)
-                  .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                  .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(6, 6, 6)
+                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(copiar)
-                  .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addComponent(abrirArchivo)))
-              .addGroup(jPanel1Layout.createSequentialGroup()
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(consultarPropiedades))
-              .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2))
+                  .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(consultarInfo))
               .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel2))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(consultarPropiedades))
+              .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(crearDirectorio)))
-            .addContainerGap(40, Short.MAX_VALUE))))
+                .addComponent(crearDirectorio))
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(abrirArchivo)))
+            .addContainerGap(38, Short.MAX_VALUE))))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,15 +381,15 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         .addComponent(consultarPropiedades, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(jLabel2)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGap(18, 18, 18)
         .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(crearDirectorio)
+        .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(12, 12, 12)
+        .addComponent(crearDirectorio)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(salir, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -459,33 +471,29 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
   //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    eliminar.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent ae) {
-        if (tablaDeArchivos.getSelectedRow() != -1) {
-          int fila = tablaDeArchivos.getSelectedRow();
-          String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
-             fila, 1).toString();
-          //System.out.println(nombreArchivo);
-          borrarArchivo(nombreArchivo);
-          modelo.removeRow(tablaDeArchivos.getSelectedRow());
-        }
+    eliminar.addActionListener((ActionEvent ae) -> {
+      if (tablaDeArchivos.getSelectedRow() != -1) {
+        int fila = tablaDeArchivos.getSelectedRow();
+        String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
+           fila, 1).toString();
+        //System.out.println(nombreArchivo);
+        borrarArchivo(nombreArchivo);
       }
     });
   }//GEN-LAST:event_eliminarActionPerformed
 
   private void borrarArchivo(String pArchivo) {
-    String unidad = (String) comboBox.getSelectedItem();
     boolean eliminar = false;
     //System.out.println(unidad + pArchivo);
-    File archivo = new File(unidad + pArchivo);
+    File archivoSeleccionado = new File(directorioActual, pArchivo);
+    System.out.println(archivoSeleccionado);
 
     while (!eliminar) {
-      if (archivo.delete()) {
+      if (archivoSeleccionado.delete()) {
         JOptionPane.showMessageDialog(this, "El archivo fue eliminado "
            + "exitosamente.", "Información",
            JOptionPane.INFORMATION_MESSAGE);
-        eliminar = archivo.exists();
+        eliminar = archivoSeleccionado.exists();
         //System.out.println(eliminar);
         break;
       } else {
@@ -509,10 +517,12 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       if (archivoSeleccionado.exists()) {
             controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
         } else {
-            JOptionPane.showMessageDialog(this, "El archivo no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El archivo no existe.", 
+               "Error", JOptionPane.ERROR_MESSAGE);
         }
     } else {
-      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.", 
+         "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
   }//GEN-LAST:event_abrirArchivoActionPerformed
 
@@ -520,10 +530,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     String unidadSeleccioanda = (String) comboBox.getSelectedItem();
     try {
       String infoUnidad = controlador.infoUnidadLogica();
-      JOptionPane.showMessageDialog(this, infoUnidad, 
+      JOptionPane.showMessageDialog(this, infoUnidad,
          "Propiedades: " + unidadSeleccioanda,
          JOptionPane.INFORMATION_MESSAGE);
-    }catch (Exception ex) {
+    } catch (Exception ex) {
       JOptionPane.showMessageDialog(this,
          "No se puede obtner la informaciónd e la unidad.", "Error",
          JOptionPane.ERROR_MESSAGE);
