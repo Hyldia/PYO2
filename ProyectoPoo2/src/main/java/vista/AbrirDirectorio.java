@@ -332,7 +332,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(salir)
-            .addGap(82, 82, 82))
+            .addGap(94, 94, 94))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanel1Layout.createSequentialGroup()
@@ -442,7 +442,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
            "Error", JOptionPane.WARNING_MESSAGE);
         break;
       }
-      File nuevoDirectorio = new File("C:\\" + nombreDir);
+      File nuevoDirectorio = new File(directorioActual, nombreDir);
+      System.out.println(nuevoDirectorio.toString());
 
       if (nuevoDirectorio.exists()) {
         JOptionPane.showMessageDialog(this, "El directorio ya existe.",
@@ -454,6 +455,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           JOptionPane.showMessageDialog(this, "El directorio fue creado "
              + "exitosamente.", "Información",
              JOptionPane.INFORMATION_MESSAGE);
+          File directorio = directorioActual;
+          try {
+            cambiarDirectorio(directorio);
+          } catch (Exception ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+               Level.SEVERE, null, ex);
+          }
           break;
         } else {
           JOptionPane.showMessageDialog(this, "No se pudo crear el directorio. "
@@ -478,6 +486,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
            fila, 1).toString();
         //System.out.println(nombreArchivo);
         borrarArchivo(nombreArchivo);
+        File directorio = directorioActual;
+        try {
+          cambiarDirectorio(directorio);
+        } catch (Exception ex) {
+          Logger.getLogger(AbrirDirectorio.class.getName()).log(
+             Level.SEVERE, null, ex);
+        }
       }
     });
   }//GEN-LAST:event_eliminarActionPerformed
