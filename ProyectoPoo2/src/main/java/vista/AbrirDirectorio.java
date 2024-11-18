@@ -223,8 +223,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     salir = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setLocation(new java.awt.Point(250, 80));
+    setMinimumSize(new java.awt.Dimension(700, 600));
 
-    jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+    jPanel1.setBackground(new java.awt.Color(204, 153, 255));
 
     tablaDeArchivos.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
@@ -530,11 +532,17 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
       File archivoSeleccionado = new File(directorioActual, nombreArchivo);
       if (archivoSeleccionado.exists()) {
-            controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
-        } else {
-            JOptionPane.showMessageDialog(this, "El archivo no existe.", 
-               "Error", JOptionPane.ERROR_MESSAGE);
+        if (archivoSeleccionado.isFile()) {
+          controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
+        } else if (archivoSeleccionado.isDirectory()) {
+          JOptionPane.showMessageDialog(this, 
+             "El elemento seleccionado es un directorio no un archivo", "Error",
+             JOptionPane.ERROR_MESSAGE);
         }
+      } else {
+        JOptionPane.showMessageDialog(this, "El archivo no existe.", 
+          "Error", JOptionPane.ERROR_MESSAGE);
+       }
     } else {
       JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.", 
          "Advertencia", JOptionPane.WARNING_MESSAGE);
