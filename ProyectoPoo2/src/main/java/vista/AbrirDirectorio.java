@@ -178,9 +178,11 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           //ImageIcon imagenFinal = new ImageIcon(imagenSize);
           modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
             fechaCreacion});
+          mostrarRuta();
         }
       } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "El directorio no posee archivos.",
+        mostrarRuta();
+        JOptionPane.showMessageDialog(this, "El directorio se encuentra vacío.",
            "Información", JOptionPane.ERROR_MESSAGE);
       }
     }
@@ -216,6 +218,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     consultarPropiedades = new javax.swing.JButton();
     jLabel2 = new javax.swing.JLabel();
     salir = new javax.swing.JButton();
+    jLabel3 = new javax.swing.JLabel();
+    labelRuta = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setLocation(new java.awt.Point(250, 80));
@@ -313,23 +317,28 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     });
 
+    jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    jLabel3.setText("Ruta actual:");
+
+    labelRuta.setBackground(new java.awt.Color(255, 255, 255));
+    labelRuta.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+    labelRuta.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
-        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(291, 291, 291)
+        .addContainerGap()
+        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addComponent(jLabel3)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(labelRuta)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(botonRetroceder)))
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(salir)
-            .addGap(94, 94, 94))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanel1Layout.createSequentialGroup()
@@ -359,16 +368,24 @@ public class AbrirDirectorio extends javax.swing.JFrame {
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(abrirArchivo)))
-            .addContainerGap(38, Short.MAX_VALUE))))
+            .addContainerGap(38, Short.MAX_VALUE))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(salir)
+            .addGap(94, 94, 94))))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addContainerGap()
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addComponent(botonRetroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addContainerGap(19, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(botonRetroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(jLabel3)
+            .addComponent(labelRuta)))
+        .addContainerGap(25, Short.MAX_VALUE))
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addGap(26, 26, 26)
         .addComponent(jLabel1)
@@ -407,6 +424,165 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
+    System.exit(0);
+  }//GEN-LAST:event_salirActionPerformed
+
+  private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed
+    String unidadSeleccioanda = (String) comboBox.getSelectedItem();
+    try {
+      String infoUnidad = controlador.infoUnidadLogica();
+      JOptionPane.showMessageDialog(this, infoUnidad,
+        "Propiedades: " + unidadSeleccioanda,
+        JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception ex) {
+      JOptionPane.showMessageDialog(this,
+        "No se puede obtner la información de la unidad.", "Error",
+        JOptionPane.ERROR_MESSAGE);
+    }
+  }//GEN-LAST:event_consultarPropiedadesActionPerformed
+
+  private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
+    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
+      if (archivoSeleccionado.exists()) {
+        if (archivoSeleccionado.isFile()) {
+          controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
+        } else if (archivoSeleccionado.isDirectory()) {
+          JOptionPane.showMessageDialog(this,
+            "El elemento seleccionado es un directorio no un archivo", "Error",
+            JOptionPane.ERROR_MESSAGE);
+        }
+      } else {
+        JOptionPane.showMessageDialog(this, "El archivo no existe.",
+          "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    } else {
+      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.",
+        "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
+  }//GEN-LAST:event_abrirArchivoActionPerformed
+
+  private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_copiarActionPerformed
+
+  //// Solo se elimina el archivo de la tabla NO de la compu
+  private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+    int fila = tablaDeArchivos.getSelectedRow();
+    if (tablaDeArchivos.getSelectedRow() >= 0) {
+      String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
+        fila, 1).toString();
+      //System.out.println(nombreArchivo);
+      borrarArchivo(nombreArchivo);
+      File directorio = directorioActual;
+      try {
+        cambiarDirectorio(directorio);
+      } catch (Exception ex) {
+        Logger.getLogger(AbrirDirectorio.class.getName()).log(
+          Level.SEVERE, null, ex);
+      }
+    } else {
+      JOptionPane.showMessageDialog(null, "Debe seleccionar un directorio o "
+        + "archivo.",
+        "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
+  }//GEN-LAST:event_eliminarActionPerformed
+
+  private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
+    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
+
+      if (archivoSeleccionado.exists()) {
+        if (archivoSeleccionado.isFile()) {
+          try {
+            String mensaje = controlador.consultarInfoArchivo(
+              archivoSeleccionado.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, mensaje,
+              "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
+          } catch (IOException ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+              Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+              "Error al obtener información del archivo.",
+              "Error", JOptionPane.ERROR_MESSAGE);
+          }
+        } else if (archivoSeleccionado.isDirectory()) {
+          try {
+            String mensaje = controlador.consultarinfoDirectorio(
+              archivoSeleccionado.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, mensaje,
+              "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
+          } catch (IOException ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+              Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+              this, "Error al obtener información del directorio.",
+              "Error", JOptionPane.ERROR_MESSAGE);
+          }
+        }
+      } else {
+        JOptionPane.showMessageDialog(this, "El archivo no existe.",
+          "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    } else {
+      JOptionPane.showMessageDialog(this, "Seleccione un archivo para abrir.",
+        "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
+  }//GEN-LAST:event_consultarInfoActionPerformed
+
+  private void crearDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDirectorioActionPerformed
+    //String nuevoDirectorio = "Por favor ingrese un nombre válido";
+    boolean datoValido = false;
+    while (!datoValido) {
+      String nombreDir = JOptionPane.showInputDialog(this,
+        "Ingrese el nombre del nuevo directorio");
+      if (nombreDir == null || nombreDir.isBlank()) {
+        JOptionPane.showMessageDialog(this, "El nombre del directorio "
+          + "tiene que ser distinto a vacío.",
+          "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      } else if (!validarPalabra(nombreDir)) {
+        JOptionPane.showMessageDialog(this, "El nombre del directorio no"
+          + " cumple con los requisitos.",
+          "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      }
+      File nuevoDirectorio = new File(directorioActual, nombreDir);
+      System.out.println(nuevoDirectorio.toString());
+
+      if (nuevoDirectorio.exists()) {
+        JOptionPane.showMessageDialog(this, "El directorio ya existe.",
+          "Error", JOptionPane.WARNING_MESSAGE);
+        break;
+      } else {
+        boolean creado = nuevoDirectorio.mkdir(); //True si el directorio ya está creado
+        if (creado) {
+          JOptionPane.showMessageDialog(this, "El directorio fue creado "
+            + "exitosamente.", "Información",
+            JOptionPane.INFORMATION_MESSAGE);
+          File directorio = directorioActual;
+          try {
+            cambiarDirectorio(directorio);
+          } catch (Exception ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+              Level.SEVERE, null, ex);
+          }
+          break;
+        } else {
+          JOptionPane.showMessageDialog(this, "No se pudo crear el directorio. "
+            + "Por favor verifique los permisos.", "Información",
+            JOptionPane.ERROR_MESSAGE);
+          break;
+        }
+      }
+    }
+  }//GEN-LAST:event_crearDirectorioActionPerformed
+
   private void botonRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRetrocederActionPerformed
     if (directorioActual != null && directorioActual.getParentFile() != null) {
       try {
@@ -421,121 +597,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_comboBoxActionPerformed
-
-  private void crearDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDirectorioActionPerformed
-    //String nuevoDirectorio = "Por favor ingrese un nombre válido";
-    boolean datoValido = false;
-    while (!datoValido) {
-      String nombreDir = JOptionPane.showInputDialog(this,
-         "Ingrese el nombre del nuevo directorio");
-      if (nombreDir == null || nombreDir.isBlank()) {
-        JOptionPane.showMessageDialog(this, "El nombre del directorio "
-           + "tiene que ser distinto a vacío.",
-           "Error", JOptionPane.WARNING_MESSAGE);
-        break;
-      } else if (!validarPalabra(nombreDir)) {
-        JOptionPane.showMessageDialog(this, "El nombre del directorio no"
-           + " cumple con los requisitos.",
-           "Error", JOptionPane.WARNING_MESSAGE);
-        break;
-      }
-      File nuevoDirectorio = new File(directorioActual, nombreDir);
-      System.out.println(nuevoDirectorio.toString());
-
-      if (nuevoDirectorio.exists()) {
-        JOptionPane.showMessageDialog(this, "El directorio ya existe.",
-           "Error", JOptionPane.WARNING_MESSAGE);
-        break;
-      } else {
-        boolean creado = nuevoDirectorio.mkdir(); //True si el directorio ya está creado
-        if (creado) {
-          JOptionPane.showMessageDialog(this, "El directorio fue creado "
-             + "exitosamente.", "Información",
-             JOptionPane.INFORMATION_MESSAGE);
-          File directorio = directorioActual;
-          try {
-            cambiarDirectorio(directorio);
-          } catch (Exception ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
-               Level.SEVERE, null, ex);
-          }
-          break;
-        } else {
-          JOptionPane.showMessageDialog(this, "No se pudo crear el directorio. "
-             + "Por favor verifique los permisos.", "Información",
-             JOptionPane.ERROR_MESSAGE);
-          break;
-        }
-      }
-    }
-  }//GEN-LAST:event_crearDirectorioActionPerformed
-
-  private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
-    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
-    if (filaSeleccionada >= 0) {
-      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
-      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
-
-      if (archivoSeleccionado.exists()) {
-        if (archivoSeleccionado.isFile()) {
-          try {
-            String mensaje = controlador.consultarInfoArchivo(
-               archivoSeleccionado.getAbsolutePath());
-            JOptionPane.showMessageDialog(this, mensaje,
-               "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
-          } catch (IOException ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
-               Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this,
-               "Error al obtener información del archivo.",
-               "Error", JOptionPane.ERROR_MESSAGE);
-          }
-        } else if (archivoSeleccionado.isDirectory()) {
-          try {
-            String mensaje = controlador.consultarinfoDirectorio(
-               archivoSeleccionado.getAbsolutePath());
-            JOptionPane.showMessageDialog(this, mensaje,
-               "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
-          } catch (IOException ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
-               Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(
-               this, "Error al obtener información del directorio.",
-               "Error", JOptionPane.ERROR_MESSAGE);
-          }
-        }
-      } else {
-        JOptionPane.showMessageDialog(this, "El archivo no existe.",
-           "Error", JOptionPane.ERROR_MESSAGE);
-      }
-    } else {
-      JOptionPane.showMessageDialog(this, "Seleccione un archivo para abrir.",
-         "Advertencia", JOptionPane.WARNING_MESSAGE);
-    }
-
-  }//GEN-LAST:event_consultarInfoActionPerformed
-
-  //// Solo se elimina el archivo de la tabla NO de la compu
-  private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    int fila = tablaDeArchivos.getSelectedRow();
-    if (tablaDeArchivos.getSelectedRow() >= 0) {
-      String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
-         fila, 1).toString();
-      //System.out.println(nombreArchivo);
-      borrarArchivo(nombreArchivo);
-      File directorio = directorioActual;
-      try {
-        cambiarDirectorio(directorio);
-      } catch (Exception ex) {
-        Logger.getLogger(AbrirDirectorio.class.getName()).log(
-           Level.SEVERE, null, ex);
-      }
-    } else {
-      JOptionPane.showMessageDialog(null, "Debe seleccionar un directorio o "
-         + "archivo.",
-         "Advertencia", JOptionPane.WARNING_MESSAGE);
-    }
-  }//GEN-LAST:event_eliminarActionPerformed
 
   private void borrarArchivo(String pArchivo) {
     boolean eliminar = false;
@@ -559,52 +620,16 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     }
   }
 
-  private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_copiarActionPerformed
 
-
-  private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-    int filaSeleccionada = tablaDeArchivos.getSelectedRow();
-    if (filaSeleccionada >= 0) {
-      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
-      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
-      if (archivoSeleccionado.exists()) {
-        if (archivoSeleccionado.isFile()) {
-          controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
-        } else if (archivoSeleccionado.isDirectory()) {
-          JOptionPane.showMessageDialog(this,
-             "El elemento seleccionado es un directorio no un archivo", "Error",
-             JOptionPane.ERROR_MESSAGE);
-        }
-      } else {
-        JOptionPane.showMessageDialog(this, "El archivo no existe.",
-           "Error", JOptionPane.ERROR_MESSAGE);
-      }
-    } else {
-      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.",
-         "Advertencia", JOptionPane.WARNING_MESSAGE);
+  private void mostrarRuta() {
+    int largo = 60;
+    String ruta = directorioActual.getPath();
+    if (ruta.length() > largo) {
+      ruta = ruta.substring(0, largo - 3) + "...";
     }
-  }//GEN-LAST:event_abrirArchivoActionPerformed
-
-  private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed
-    String unidadSeleccioanda = (String) comboBox.getSelectedItem();
-    try {
-      String infoUnidad = controlador.infoUnidadLogica();
-      JOptionPane.showMessageDialog(this, infoUnidad,
-         "Propiedades: " + unidadSeleccioanda,
-         JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception ex) {
-      JOptionPane.showMessageDialog(this,
-         "No se puede obtner la información de la unidad.", "Error",
-         JOptionPane.ERROR_MESSAGE);
-    }
-  }//GEN-LAST:event_consultarPropiedadesActionPerformed
-
-  private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
-    System.exit(0);
-  }//GEN-LAST:event_salirActionPerformed
-
+    labelRuta.setText(ruta);
+  }
+  
   /**
    * @param args the command line arguments
    */
@@ -651,8 +676,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   private javax.swing.JButton eliminar;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel jLabel3;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JLabel labelRuta;
   private javax.swing.JButton salir;
   private javax.swing.JTable tablaDeArchivos;
   // End of variables declaration//GEN-END:variables
