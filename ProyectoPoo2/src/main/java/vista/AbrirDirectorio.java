@@ -517,22 +517,24 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
   //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-    eliminar.addActionListener((ActionEvent ae) -> {
-      if (tablaDeArchivos.getSelectedRow() != -1) {
-        int fila = tablaDeArchivos.getSelectedRow();
-        String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
-           fila, 1).toString();
-        //System.out.println(nombreArchivo);
-        borrarArchivo(nombreArchivo);
-        File directorio = directorioActual;
-        try {
-          cambiarDirectorio(directorio);
-        } catch (Exception ex) {
-          Logger.getLogger(AbrirDirectorio.class.getName()).log(
-             Level.SEVERE, null, ex);
-        }
+    int fila = tablaDeArchivos.getSelectedRow();
+    if (tablaDeArchivos.getSelectedRow() >= 0) {
+      String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
+         fila, 1).toString();
+      //System.out.println(nombreArchivo);
+      borrarArchivo(nombreArchivo);
+      File directorio = directorioActual;
+      try {
+        cambiarDirectorio(directorio);
+      } catch (Exception ex) {
+        Logger.getLogger(AbrirDirectorio.class.getName()).log(
+           Level.SEVERE, null, ex);
       }
-    });
+    } else {
+      JOptionPane.showMessageDialog(null, "Debe seleccionar un directorio o "
+         + "archivo.",
+         "Advertencia", JOptionPane.WARNING_MESSAGE);
+    }
   }//GEN-LAST:event_eliminarActionPerformed
 
   private void borrarArchivo(String pArchivo) {
@@ -594,7 +596,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
          JOptionPane.INFORMATION_MESSAGE);
     } catch (Exception ex) {
       JOptionPane.showMessageDialog(this,
-         "No se puede obtner la informaciónd e la unidad.", "Error",
+         "No se puede obtner la información de la unidad.", "Error",
          JOptionPane.ERROR_MESSAGE);
     }
   }//GEN-LAST:event_consultarPropiedadesActionPerformed
