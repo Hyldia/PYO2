@@ -5,14 +5,9 @@
 package vista;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import controlador.Controlador;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -477,38 +472,46 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
   private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
     int filaSeleccionada = tablaDeArchivos.getSelectedRow();
-if (filaSeleccionada >= 0) {
-    String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
-    File archivoSeleccionado = new File(directorioActual, nombreArchivo);
+    if (filaSeleccionada >= 0) {
+      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      File archivoSeleccionado = new File(directorioActual, nombreArchivo);
 
-    if (archivoSeleccionado.exists()) {
+      if (archivoSeleccionado.exists()) {
         if (archivoSeleccionado.isFile()) {
-            try {
-                String mensaje = controlador.consultarInfoArchivo(archivoSeleccionado.getAbsolutePath());
-                JOptionPane.showMessageDialog(this, mensaje, "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-                Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error al obtener información del archivo.", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            }
+          try {
+            String mensaje = controlador.consultarInfoArchivo(
+               archivoSeleccionado.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, mensaje,
+               "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
+          } catch (IOException ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+               Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+               "Error al obtener información del archivo.",
+               "Error", JOptionPane.ERROR_MESSAGE);
+          }
         } else if (archivoSeleccionado.isDirectory()) {
-            try {
-                String mensaje = controlador.consultarinfoDirectorio(archivoSeleccionado.getAbsolutePath());
-                JOptionPane.showMessageDialog(this, mensaje, "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-                Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error al obtener información del directorio.", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            }
+          try {
+            String mensaje = controlador.consultarinfoDirectorio(
+               archivoSeleccionado.getAbsolutePath());
+            JOptionPane.showMessageDialog(this, mensaje,
+               "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
+          } catch (IOException ex) {
+            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+               Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(
+               this, "Error al obtener información del directorio.",
+               "Error", JOptionPane.ERROR_MESSAGE);
+          }
         }
+      } else {
+        JOptionPane.showMessageDialog(this, "El archivo no existe.",
+           "Error", JOptionPane.ERROR_MESSAGE);
+      }
     } else {
-        JOptionPane.showMessageDialog(this, "El archivo no existe.", 
-            "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, "Seleccione un archivo para abrir.",
+         "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
-} else {
-    JOptionPane.showMessageDialog(this, "Seleccione un archivo para abrir.", 
-        "Advertencia", JOptionPane.WARNING_MESSAGE);
-}
 
   }//GEN-LAST:event_consultarInfoActionPerformed
 
@@ -558,7 +561,7 @@ if (filaSeleccionada >= 0) {
     // TODO add your handling code here:
   }//GEN-LAST:event_copiarActionPerformed
 
-  
+
   private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
     int filaSeleccionada = tablaDeArchivos.getSelectedRow();
     if (filaSeleccionada >= 0) {
@@ -568,16 +571,16 @@ if (filaSeleccionada >= 0) {
         if (archivoSeleccionado.isFile()) {
           controlador.abrirArchivo(archivoSeleccionado.getAbsolutePath());
         } else if (archivoSeleccionado.isDirectory()) {
-          JOptionPane.showMessageDialog(this, 
+          JOptionPane.showMessageDialog(this,
              "El elemento seleccionado es un directorio no un archivo", "Error",
              JOptionPane.ERROR_MESSAGE);
         }
       } else {
-        JOptionPane.showMessageDialog(this, "El archivo no existe.", 
-          "Error", JOptionPane.ERROR_MESSAGE);
-       }
+        JOptionPane.showMessageDialog(this, "El archivo no existe.",
+           "Error", JOptionPane.ERROR_MESSAGE);
+      }
     } else {
-      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.", 
+      JOptionPane.showMessageDialog(null, "Seleccione un archivo para abrir.",
          "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
   }//GEN-LAST:event_abrirArchivoActionPerformed
