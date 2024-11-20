@@ -14,6 +14,7 @@ import logicadenegocios.Archivo;
 import logicadenegocios.Directorio;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.io.*;
 
 /**
  * Clase que representa la abstracción de un Controlador
@@ -169,7 +170,71 @@ private long calcularTamañoDirectorio(File directorio) {
 
     return tamañoTotal;
 }
-  
+
+  public void copiarDirectorio(String rutaOrigen, String rutaDestino) throws IOException {
+    File directorioOrigen = new File(rutaOrigen);
+    File directorioDestino = new File(rutaDestino);
+
+    if (!directorioOrigen.exists()) {
+      throw new IOException("El directorio de origen no existe: " + rutaOrigen);
+    }
+
+    if (directorioOrigen.isDirectory()) {
+      // Si el directorio destino no existe, lo creamos
+      if (!directorioDestino.exists()) {
+        directorioDestino.mkdir();
+      }
+
+      // Lista los archivos y subdirectorios dentro del directorio de origen
+      String[] archivos = directorioOrigen.list();
+
+      if (archivos != null) {
+        for (String archivo : archivos) {
+          // Recursivamente copia cada archivo o subdirectorio
+          copiarDirectorio(rutaOrigen + File.separator + archivo, rutaDestino + File.separator + archivo);
+        }
+      }
+    } else {
+        // Si es un archivo, copia su contenido
+        copiarArchivo(rutaOrigen, rutaDestino);
+    }
+  }
+
+public void copiarArchivo(String archivoOrigen, String archivoDestino) throws IOException {
+    File archivoOrigenFile = new File(archivoOrigen);
+    File archivoDestinoFile = new File(archivoDestino);
+    
+    if (!archivoOrigenFile.exists()) {
+        throw new IOException("El archivo de origen no existe: " + archivoOrigen);
+    }
+
+    // Verifica si el directorio de destino existe, sino lo crea
+    File directorioDestino = archivoDestinoFile.getParentFile();
+    if (!directorioDestino.exists()) {
+        if (!directorioDestino.mkdirs()) {
+            throw new IOException("No se pudo crear el directorio de destino: " + directorioDestino.getAbsolutePath());
+        }
+    }
+
+    // Verifica si el archivo de destino ya existe
+    if (archivoDestinoFile.exists()) {
+        throw new IOException("El archivo de destino ya existe: " + archivoDestino);
+    }
+
+    // Copiar el archivo de origen al destino
+    try (InputStream in = new FileInputStream(archivoOrigen);
+         OutputStream out = new FileOutputStream(archivoDestino)) {
+
+        byte[] buffer = new byte[1024];
+        int longitud;
+        while ((longitud = in.read(buffer)) > 0) {
+            out.write(buffer, 0, longitud);
+        }
+    } catch (IOException e) {
+        // Captura y muestra errores detallados si ocurre algún fallo al leer o escribir
+        throw new IOException("Error al copiar el archivo: " + e.getMessage());
+    }
+}
   
   // Unidad Lógica
   

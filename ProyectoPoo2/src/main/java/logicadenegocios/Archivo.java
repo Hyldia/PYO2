@@ -7,6 +7,7 @@ package logicadenegocios;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 
 /**
@@ -46,8 +47,10 @@ public class Archivo {
     return "hello";
   }
   
-  public void copiarArchivo(String pRutaDestino) {
-    
+  public void copiarArchivo(String pRutaDestino) throws IOException {
+    File archivo = new File(ruta);
+    File destino = new File(pRutaDestino + File.separator + nombre);
+    Files.copy(archivo.toPath(), destino.toPath());
   }
   
   public LocalDate getFechaCreacion() {
