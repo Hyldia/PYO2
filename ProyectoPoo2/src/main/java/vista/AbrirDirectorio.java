@@ -6,24 +6,18 @@ package vista;
 
 import java.io.File;
 import controlador.Controlador;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -66,8 +60,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         if (e.getClickCount() == 2) {
           int filaSeleccionada = tablaDeArchivos.getSelectedRow();
           if (filaSeleccionada >= 0) {
-            String tipo = (String) tablaDeArchivos.getValueAt(filaSeleccionada, 0);
-            String nombre = (String) tablaDeArchivos.getValueAt(filaSeleccionada, 1);
+            String tipo = (String) tablaDeArchivos.getValueAt(
+               filaSeleccionada, 0);
+            String nombre = (String) tablaDeArchivos.getValueAt(
+               filaSeleccionada, 1);
             if (tipo.equals("Directorio")) {
               try {
                 cambiarDirectorio(new File(directorioActual, nombre));
