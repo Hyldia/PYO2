@@ -37,6 +37,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   private DefaultTableModel modelo;
   private File[] archivos;
   private String rutaOrigen;
+  private TableRowSorter<DefaultTableModel> sorter;
 
   /**
    * Creates new form AbrirDirectorio
@@ -65,8 +66,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         if (e.getClickCount() == 2) {
           int filaSeleccionada = tablaDeArchivos.getSelectedRow();
           if (filaSeleccionada >= 0) {
-            String tipo = (String) modelo.getValueAt(filaSeleccionada, 0);
-            String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
+            String tipo = (String) tablaDeArchivos.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) tablaDeArchivos.getValueAt(filaSeleccionada, 1);
             if (tipo.equals("Directorio")) {
               try {
                 cambiarDirectorio(new File(directorioActual, nombre));
@@ -80,7 +81,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     });
 
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    sorter = new TableRowSorter<>(modelo);
     tablaDeArchivos.setRowSorter(sorter);
     tablaDeArchivos.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override
@@ -112,10 +113,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final void ordenarPorTamaño() throws Exception {
-    tablaDeArchivos.setAutoCreateRowSorter(true);
-    TableRowSorter<TableModel> sorter = new TableRowSorter<>(
-       tablaDeArchivos.getModel());
-    tablaDeArchivos.setRowSorter(sorter);
     int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
        "Tamaño");
     sorter.setComparator(indice, (String tamaño1, String tamaño2) -> {
@@ -135,35 +132,16 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   private void ordenarPorFechaDeCreacion() throws Exception {
-    tablaDeArchivos.setAutoCreateRowSorter(false);
-    modelo = (DefaultTableModel) tablaDeArchivos.getModel();
-    int rowCount = modelo.getRowCount();
-    List<Object[]> data = new ArrayList<>();
-
-    for (int i = 0; i < rowCount; i++) {
-      Object[] row = new Object[modelo.getColumnCount()];
-      for (int j = 0; j < modelo.getColumnCount(); j++) {
-        row[j] = modelo.getValueAt(i, j);
-      }
-      data.add(row);
-    }
-    int fechaColumnIndex = tablaDeArchivos.getColumnModel().getColumnIndex(
+    tablaDeArchivos.setAutoCreateRowSorter(true);
+    int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
        "Fecha de Creación");
-    data.sort((row1, row2) -> {
-      String fecha1 = (String) row1[fechaColumnIndex];
-      String fecha2 = (String) row2[fechaColumnIndex];
+    sorter.setComparator(indice, (String fecha1, String fecha2) -> {
       DateTimeFormatter formato = DateTimeFormatter.ofPattern(
          "dd/MM/yyyy HH:mm:ss");
       LocalDateTime fechaA = LocalDateTime.parse(fecha1, formato);
       LocalDateTime fechaB = LocalDateTime.parse(fecha2, formato);
       return fechaA.compareTo(fechaB);
     });
-    modelo.setRowCount(0);
-    for (Object[] row : data) {
-      modelo.addRow(row);
-    }
-    TableRowSorter<TableModel> sorter = new TableRowSorter<>(modelo);
-    tablaDeArchivos.setRowSorter(sorter);
   }
 
   public final void listarUnidadesLogicas() {
