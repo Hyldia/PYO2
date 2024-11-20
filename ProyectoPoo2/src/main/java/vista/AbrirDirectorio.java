@@ -724,7 +724,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     //System.out.println(unidad + pArchivo);
     File archivoSeleccionado = new File(directorioActual, pArchivo);
     System.out.println(archivoSeleccionado);
-
+    if (archivoSeleccionado.isDirectory()) {
+      borrarDirectorio(archivoSeleccionado);
+      JOptionPane.showMessageDialog(this, "El directorio fue eliminado "
+         + "exitosamente.", "Información",
+         JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
     while (!eliminar) {
       if (archivoSeleccionado.delete()) {
         JOptionPane.showMessageDialog(this, "El archivo fue eliminado "
@@ -739,6 +745,20 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         break;
       }
     }
+  }
+
+  private void borrarDirectorio(File pDirectorio) {
+    File[] archivos = pDirectorio.listFiles();
+    if (archivos != null) {
+      for (File archivo : archivos) {
+        if (archivo.isDirectory()) {
+          borrarDirectorio(archivo);
+        } else {
+          archivo.delete();
+        }
+      }
+    }
+    pDirectorio.delete();
   }
 
   private void mostrarRuta() {
