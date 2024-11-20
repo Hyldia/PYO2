@@ -132,7 +132,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   private void ordenarPorFechaDeCreacion() throws Exception {
-    tablaDeArchivos.setAutoCreateRowSorter(true);
     int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
        "Fecha de Creación");
     sorter.setComparator(indice, (String fecha1, String fecha2) -> {
