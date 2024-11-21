@@ -670,6 +670,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "El nombre del directorio no"
            + " cumple con los requisitos.",
            "Error", JOptionPane.WARNING_MESSAGE);
+        break;
       }
       File nuevoDirectorio = new File(directorioActual, nombreDir);
       System.out.println(nuevoDirectorio.toString());
