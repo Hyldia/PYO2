@@ -163,6 +163,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final void cambiarDirectorio(File pNuevoDirectorio) throws Exception {
+    // No BORRAR LOS MODELOS
     if (pNuevoDirectorio.isDirectory()) {
       directorioActual = pNuevoDirectorio;
       modelo.setRowCount(0);
@@ -176,10 +177,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           String tamaño = arch.isFile() ? String.format("%.2f MB",
              arch.length() / (1024.0 * 1024.0)) : "N/A";
           String fechaCreacion = controlador.getFechaCreacionArchivo(arch);
-
-          //ImageIcon imagen = new ImageIcon(getClass().getResource("archivo.png"));
-          //Image imagenSize = imagen.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-          //ImageIcon imagenFinal = new ImageIcon(imagenSize);
           modelo.addRow(new Object[]{tipo, arch.getName(), tamaño,
             fechaCreacion});
           mostrarRuta();
@@ -460,7 +457,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
     int filaSeleccionada = tablaDeArchivos.getSelectedRow();
     if (filaSeleccionada >= 0) {
-      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      String nombreArchivo = (String) tablaDeArchivos.getValueAt(
+         filaSeleccionada, 1);
       File archivoSeleccionado = new File(directorioActual, nombreArchivo);
       if (archivoSeleccionado.exists()) {
         if (archivoSeleccionado.isFile()) {
@@ -494,7 +492,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
     if (filaSeleccionada >= 0) {
       // Obtener el nombre del directorio destino
-      String nombreDestino = (String) modelo.getValueAt(filaSeleccionada, 1);
+      String nombreDestino = (String) tablaDeArchivos.getValueAt(
+         filaSeleccionada, 1);
       File directorioDestino = new File(directorioActual, nombreDestino);
 
       // Verificamos si el destino es un directorio
@@ -506,7 +505,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             // Si el origen es un archivo
             if (archivoOrigen.isFile()) {
               controlador.copiarArchivo(archivoOrigen.getAbsolutePath(),
-                 new File(directorioDestino, archivoOrigen.getName()).getAbsolutePath());
+                 new File(directorioDestino, archivoOrigen.getName(
+                 )).getAbsolutePath());
               JOptionPane.showMessageDialog(this, "El archivo fue "
                  + "copiado exitosamente.",
                  "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -514,7 +514,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             } // Si el origen es un directorio
             else if (archivoOrigen.isDirectory()) {
               controlador.copiarDirectorio(archivoOrigen.getAbsolutePath(),
-                 new File(directorioDestino, archivoOrigen.getName()).getAbsolutePath());
+                 new File(directorioDestino, archivoOrigen.getName(
+                 )).getAbsolutePath());
               JOptionPane.showMessageDialog(this, "El directorio fue "
                  + "copiado exitosamente.",
                  "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -548,29 +549,72 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
     int fila = tablaDeArchivos.getSelectedRow();
-    if (tablaDeArchivos.getSelectedRow() >= 0) {
+    System.out.println("Fila: " + fila);
+    if (fila >= 0) {
       String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
          fila, 1).toString();
-      //System.out.println(nombreArchivo);
       borrarArchivo(nombreArchivo);
       File directorio = directorioActual;
       try {
         cambiarDirectorio(directorio);
       } catch (Exception ex) {
-        Logger.getLogger(AbrirDirectorio.class.getName()).log(
-           Level.SEVERE, null, ex);
+        Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, 
+           "Error al cambiar directorio", ex);
       }
     } else {
-      JOptionPane.showMessageDialog(null, "Debe seleccionar un directorio o "
-         + "archivo.",
+      JOptionPane.showMessageDialog(null, "Debe seleccionar un directorio "
+         + "o archivo.",
          "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
+
   }//GEN-LAST:event_eliminarActionPerformed
+
+  private void borrarArchivo(String pArchivo) {
+    File archivoSeleccionado = new File(directorioActual, pArchivo);
+    System.out.println("Archivo: " + archivoSeleccionado);
+    if (archivoSeleccionado.exists()) {
+      if (archivoSeleccionado.isDirectory()) {
+        borrarDirectorio(archivoSeleccionado);
+        JOptionPane.showMessageDialog(this, 
+           "El directorio fue eliminado exitosamente.",
+           "Información", JOptionPane.INFORMATION_MESSAGE);
+      } else {
+        if (archivoSeleccionado.delete()) {
+          JOptionPane.showMessageDialog(this, 
+             "El archivo fue eliminado exitosamente.",
+             "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+          JOptionPane.showMessageDialog(this, 
+             "El archivo no pudo ser eliminado.",
+             "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    } else {
+      JOptionPane.showMessageDialog(this, 
+         "El archivo o directorio no existe.",
+         "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private void borrarDirectorio(File pDirectorio) {
+    File[] archivosBorrar = pDirectorio.listFiles();
+    if (archivosBorrar != null) {
+      for (File archivo : archivosBorrar) {
+        if (archivo.isDirectory()) {
+          borrarDirectorio(archivo);
+        } else {
+          archivo.delete();
+        }
+      }
+    }
+    pDirectorio.delete();
+  }
 
   private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
     int filaSeleccionada = tablaDeArchivos.getSelectedRow();
     if (filaSeleccionada >= 0) {
-      String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+      String nombreArchivo = (String) tablaDeArchivos.getValueAt(
+         filaSeleccionada, 1);
       File archivoSeleccionado = new File(directorioActual, nombreArchivo);
 
       if (archivoSeleccionado.exists()) {
@@ -626,7 +670,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "El nombre del directorio no"
            + " cumple con los requisitos.",
            "Error", JOptionPane.WARNING_MESSAGE);
-        break;
       }
       File nuevoDirectorio = new File(directorioActual, nombreDir);
       System.out.println(nuevoDirectorio.toString());
@@ -678,7 +721,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       int filaSeleccionada = tablaDeArchivos.getSelectedRow();
 
       if (filaSeleccionada >= 0) {
-        String nombreArchivo = (String) modelo.getValueAt(filaSeleccionada, 1);
+        String nombreArchivo = (String) tablaDeArchivos.getValueAt(
+           filaSeleccionada, 1);
         File archivoSeleccionado = new File(directorioActual, nombreArchivo);
 
         // Validamos si el archivo o directorio seleccionado existe
@@ -700,48 +744,6 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_selectionActionPerformed
 
-  private void borrarArchivo(String pArchivo) {
-    boolean eliminar = false;
-    //System.out.println(unidad + pArchivo);
-    File archivoSeleccionado = new File(directorioActual, pArchivo);
-    System.out.println(archivoSeleccionado);
-    if (archivoSeleccionado.isDirectory()) {
-      borrarDirectorio(archivoSeleccionado);
-      JOptionPane.showMessageDialog(this, "El directorio fue eliminado "
-         + "exitosamente.", "Información",
-         JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-    while (!eliminar) {
-      if (archivoSeleccionado.delete()) {
-        JOptionPane.showMessageDialog(this, "El archivo fue eliminado "
-           + "exitosamente.", "Información",
-           JOptionPane.INFORMATION_MESSAGE);
-        eliminar = archivoSeleccionado.exists();
-        //System.out.println(eliminar);
-        break;
-      } else {
-        JOptionPane.showMessageDialog(this, "El archivo no pudo ser eliminado.",
-           "Información", JOptionPane.ERROR_MESSAGE);
-        break;
-      }
-    }
-  }
-
-  private void borrarDirectorio(File pDirectorio) {
-    File[] archivos = pDirectorio.listFiles();
-    if (archivos != null) {
-      for (File archivo : archivos) {
-        if (archivo.isDirectory()) {
-          borrarDirectorio(archivo);
-        } else {
-          archivo.delete();
-        }
-      }
-    }
-    pDirectorio.delete();
-  }
-
   private void mostrarRuta() {
     int largo = 60;
     String ruta = directorioActual.getPath();
@@ -753,8 +755,9 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   class FileTypeRenderer extends JLabel implements TableCellRenderer {
-    
+
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
        boolean isSelected, boolean hasFocus, int row, int column) {
@@ -762,12 +765,12 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         String tipo = (String) value;
         String nombreArchivo = (String) table.getValueAt(row, 1);
         if (tipo.equals("Directorio")) {
- 
+
           setIcon(fileSystemView.getSystemIcon(new File(directorioActual,
              nombreArchivo)));
         } else {
           setIcon(fileSystemView.getSystemIcon(new File(directorioActual,
-             nombreArchivo))); 
+             nombreArchivo)));
         }
         setText("");
       }
