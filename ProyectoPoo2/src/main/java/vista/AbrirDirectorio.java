@@ -7,6 +7,7 @@ package vista;
 import java.io.File;
 import controlador.Controlador;
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -444,12 +444,13 @@ public class AbrirDirectorio extends javax.swing.JFrame {
 
   private void consultarPropiedadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarPropiedadesActionPerformed
     String unidadSeleccioanda = (String) comboBox.getSelectedItem();
+    File unidadSeleccionadaFile = new File(unidadSeleccioanda);
     try {
-      String infoUnidad = controlador.infoUnidadLogica();
+      String infoUnidad = controlador.infoUnidadLogica(unidadSeleccionadaFile);
       JOptionPane.showMessageDialog(this, infoUnidad,
          "Propiedades: " + unidadSeleccioanda,
          JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception ex) {
+    } catch (HeadlessException ex) {
       JOptionPane.showMessageDialog(this,
          "No se puede obtner la información de la unidad.", "Error",
          JOptionPane.ERROR_MESSAGE);
