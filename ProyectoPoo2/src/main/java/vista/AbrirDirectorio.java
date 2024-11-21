@@ -6,6 +6,7 @@ package vista;
 
 import java.io.File;
 import controlador.Controlador;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -15,9 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -103,6 +109,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         }
       }
     });
+    tablaDeArchivos.getColumnModel().getColumn(0).setCellRenderer(
+       new FileTypeRenderer());
     comboBox.removeAllItems();
     listarUnidadesLogicas();
     comboBox.setSelectedIndex(0);
@@ -344,8 +352,22 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(botonRetroceder)))
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(salir)
+            .addGap(110, 110, 110))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(consultarPropiedades)
+                    .addComponent(jLabel2)
+                    .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                  .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(14, 14, 14)
+                    .addComponent(consultarInfo))))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,23 +383,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
                 .addComponent(abrirArchivo))
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addComponent(crearDirectorio))
-              .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                  .addComponent(consultarInfo)
-                  .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                      .addComponent(consultarPropiedades)
-                      .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                      .addGap(14, 14, 14)
-                      .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-            .addContainerGap(70, Short.MAX_VALUE))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(salir)
-            .addGap(110, 110, 110))))
+                .addComponent(crearDirectorio)))
+            .addContainerGap(70, Short.MAX_VALUE))))
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,10 +411,10 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGap(18, 18, 18)
         .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(crearDirectorio)
+        .addGap(18, 18, 18)
+        .addComponent(crearDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
@@ -741,6 +748,31 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       ruta = ruta.substring(0, largo - 3) + "...";
     }
     labelRuta.setText(ruta);
+
+  }
+
+  class FileTypeRenderer extends JLabel implements TableCellRenderer {
+
+    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+       boolean isSelected, boolean hasFocus, int row, int column) {
+      if (value != null) {
+        String tipo = (String) value;
+        String nombreArchivo = (String) table.getValueAt(row, 1);
+        if (tipo.equals("Directorio")) {
+ 
+          setIcon(fileSystemView.getSystemIcon(new File(directorioActual,
+             nombreArchivo)));
+        } else {
+          setIcon(fileSystemView.getSystemIcon(new File(directorioActual,
+             nombreArchivo))); 
+        }
+        setText("");
+      }
+      return this;
+    }
   }
 
   /**
