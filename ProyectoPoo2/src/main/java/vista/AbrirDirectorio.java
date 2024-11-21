@@ -443,7 +443,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
     String unidadSeleccioanda = (String) comboBox.getSelectedItem();
     File unidadSeleccionadaFile = new File(unidadSeleccioanda);
     try {
-      String infoUnidad = controlador.infoUnidadLogica(unidadSeleccionadaFile);
+      String infoUnidad = controlador.getinfoUnidadLogica(
+         unidadSeleccionadaFile);
       JOptionPane.showMessageDialog(this, infoUnidad,
          "Propiedades: " + unidadSeleccioanda,
          JOptionPane.INFORMATION_MESSAGE);

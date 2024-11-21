@@ -58,7 +58,8 @@ public class Controlador {
   }
 
   /**
-   *
+   * Método encargado de el archivo que ha sido elegido por el usuario
+   * 
    * @param rutaArchivo
    */
   public void abrirArchivo(String rutaArchivo) {
@@ -70,7 +71,13 @@ public class Controlador {
          "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
-
+  /**
+   * Método encargado de consultar la información de un archivo seleccionado
+   * 
+   * @param rutaArchivo
+   * @return La informacion del archivo
+   * @throws IOException 
+   */
   public String consultarInfoArchivo(String rutaArchivo) throws IOException {
     if (rutaArchivo == null || rutaArchivo.isEmpty()) {
       throw new IllegalArgumentException("La ruta del archivo no es válida.");
@@ -113,6 +120,12 @@ public class Controlador {
     return info;
   }
 
+  /**
+   * étodo encargado de consultar la información de un directorio seleccionado
+   * @param rutaDirectorio
+   * @return La información del directorio
+   * @throws IOException 
+   */
   public String consultarinfoDirectorio(String rutaDirectorio)
      throws IOException {
     if (rutaDirectorio == null || rutaDirectorio.isEmpty()) {
@@ -165,6 +178,12 @@ public class Controlador {
     return info;
   }
 
+  /**
+   * Método encargado de calcular el tamaño de un directorio
+   * 
+   * @param directorio
+   * @return El tamaño total del diectorio
+   */
   private long calcularTamañoDirectorio(File directorio) {
     long tamañoTotal = 0;
     File[] archivos = directorio.listFiles();
@@ -182,6 +201,13 @@ public class Controlador {
     return tamañoTotal;
   }
 
+  /**
+   * Método encargado de copiar la informacion de un directorio a otro
+   * 
+   * @param rutaOrigen
+   * @param rutaDestino
+   * @throws IOException 
+   */
   public void copiarDirectorio(String rutaOrigen, String rutaDestino)
      throws IOException {
     File directorioOrigen = new File(rutaOrigen);
@@ -213,6 +239,13 @@ public class Controlador {
     }
   }
 
+  /**
+   * Método encargado de copiar la informacion de un archivo a otro
+   * 
+   * @param archivoOrigen
+   * @param archivoDestino
+   * @throws IOException 
+   */
   public void copiarArchivo(String archivoOrigen, String archivoDestino)
      throws IOException {
     File archivoOrigenFile = new File(archivoOrigen);
@@ -263,6 +296,7 @@ public class Controlador {
     return unidades;
   }
 
+  // Métodos accesores
   public String getFechaCreacionArchivo(File pArchivo) {
     if (pArchivo == null || !pArchivo.exists()) {
       return "Archivo no válido o inexistente";
@@ -288,7 +322,7 @@ public class Controlador {
     return unidadLogica.getContenido(pRuta);
   }
 
-  public String infoUnidadLogica(File pUnidadLogica) {
+  public String getinfoUnidadLogica(File pUnidadLogica) {
     unidadLogica.setUnidadLogica(pUnidadLogica);
     return unidadLogica.toString();
   }

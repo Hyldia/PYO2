@@ -43,10 +43,6 @@ public class Archivo {
     
   }
   
-  public String eliminar() {
-    return "hello";
-  }
-  
   public void copiarArchivo(String pRutaDestino) throws IOException {
     File archivo = new File(ruta);
     File destino = new File(pRutaDestino + File.separator + nombre);
@@ -66,13 +62,15 @@ public class Archivo {
         try {
           desktop.open(archivo);
         }catch (IOException e){
-          throw new IOException("No se puede abrir el archivo por un error en el sistema.");
+          throw new IOException("No se puede abrir el archivo por un error en "
+             + "el sistema.");
         }
       }else {
         throw new IOException("El archivo no existe en la ruta dada.");
       }
     }else {
-      throw new IOException("El sistema no soporta abrir el archivo seleccionado");
+      throw new IOException("El sistema no soporta abrir el archivo "
+         + "seleccionado");
     }
   }
   
