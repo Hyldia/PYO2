@@ -193,7 +193,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   public final boolean validarPalabra(String pPalabra) {
-    String regex = "^[A-Za-z\\\\d]{1,64}$";
+    String regex = "^[A-Za-z0-9]{1,64}$";
     Pattern patron = Pattern.compile(regex);
     Matcher matcher = patron.matcher(pPalabra);
     return matcher.matches();
@@ -752,9 +752,8 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   }
 
   class FileTypeRenderer extends JLabel implements TableCellRenderer {
-
+    
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
        boolean isSelected, boolean hasFocus, int row, int column) {
