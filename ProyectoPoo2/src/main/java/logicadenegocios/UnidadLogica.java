@@ -5,6 +5,7 @@
 package logicadenegocios;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -53,25 +54,6 @@ public class UnidadLogica {
   }
 
   /**
-   *
-   * @return
-   */
-  public String getSistemaArchivos() {
-    try {
-      FileStore store = Files.getFileStore(Paths.get(unidad.getPath()));
-      return store.type();
-    } catch (Exception e) {
-      return "Desconocido";
-    }
-  }
-
-  public String getFechaCreacion(File contenido) {
-    long fecha = contenido.lastModified();
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    return sdf.format(fecha);
-  }
-
-  /**
    * Obtiene el contenido del direcctorio especificado si no De la unidad C:
    *
    * @param pRuta
@@ -113,27 +95,42 @@ public class UnidadLogica {
   @Override
   public String toString() {
     StringBuilder info = new StringBuilder();
-    
+
     info.append("Nombre de la unidad: ").append(getNombre()).append("\n");
     info.append("Sistema de archivos: ").append(getSistemaArchivos()).
        append("\n");
-    
-    info.append("Capacidad total: ").append(String.format("%-30s%-30s", 
-            formaBytes(getEspacioTotal()) + " bytes", 
-            bytesAGigabytes(getEspacioTotal()) + " GB")).append("\n");
-    
-    info.append("Espacio libre: ").append(String.format("%-30s%-30s", 
-            formaBytes(getEspacioLibre()) + " bytes", 
-            bytesAGigabytes(getEspacioLibre()) + " GB")).append("\n");
-    
-    info.append("Espacio usado: ").append(String.format("%-30s%-30s", 
-            formaBytes(getEspacioUsado()) + " bytes", 
-            bytesAGigabytes(getEspacioUsado()) + " GB")).append("\n");
-    
+
+    info.append("Capacidad total: ").append(String.format("%-30s%-30s",
+       formaBytes(getEspacioTotal()) + " bytes",
+       bytesAGigabytes(getEspacioTotal()) + " GB")).append("\n");
+
+    info.append("Espacio libre: ").append(String.format("%-30s%-30s",
+       formaBytes(getEspacioLibre()) + " bytes",
+       bytesAGigabytes(getEspacioLibre()) + " GB")).append("\n");
+
+    info.append("Espacio usado: ").append(String.format("%-30s%-30s",
+       formaBytes(getEspacioUsado()) + " bytes",
+       bytesAGigabytes(getEspacioUsado()) + " GB")).append("\n");
+
     return info.toString();
-}
+  }
 
   //Metodos accesores
+  public String getSistemaArchivos() {
+    try {
+      FileStore store = Files.getFileStore(Paths.get(unidad.getPath()));
+      return store.type();
+    } catch (IOException e) {
+      return "Desconocido";
+    }
+  }
+
+  public String getFechaCreacion(File contenido) {
+    long fecha = contenido.lastModified();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    return sdf.format(fecha);
+  }
+
   public String getNombre() {
     return unidad.getPath();
   }
@@ -149,7 +146,7 @@ public class UnidadLogica {
   public long getEspacioUsado() {
     return getEspacioTotal() - getEspacioLibre();
   }
-  
+
   public void setUnidadLogica(File pUnidad) {
     unidad = pUnidad;
   }

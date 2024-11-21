@@ -19,22 +19,7 @@ public class Archivo {
   private String nombre;
   private String ruta;
   private String tipo;
-  private String atributos;
   private LocalDate fechaCreacion;
-  
-  /**
-   * Método constructor de la clase Archivo
-   * 
-   * @param pNombre
-   * @param pRuta
-   * @param pTipo 
-   */
-  public Archivo(String pNombre, String pRuta, String pTipo) {
-    nombre = pNombre;
-    ruta = pRuta;
-    tipo = pTipo;
-    fechaCreacion = LocalDate.now();
-  }
   
   /**
    * Método constructor de la clase Archivo
@@ -43,16 +28,24 @@ public class Archivo {
     
   }
   
+  /**
+   * Método encargado de copiar un archivo a otro
+   * 
+   * @param pRutaDestino
+   * @throws IOException 
+   */
   public void copiarArchivo(String pRutaDestino) throws IOException {
     File archivo = new File(ruta);
     File destino = new File(pRutaDestino + File.separator + nombre);
     Files.copy(archivo.toPath(), destino.toPath());
   }
-  
-  public LocalDate getFechaCreacion() {
-    return fechaCreacion;
-  }
 
+  /**
+   * Método encargado de abrir el archivo seleccionado por el usuario
+   * 
+   * @param ruta
+   * @throws IOException 
+   */
   public void abrirArchivo(String ruta) throws IOException {
     if (Desktop.isDesktopSupported()) {
       Desktop desktop = Desktop.getDesktop();
@@ -74,6 +67,11 @@ public class Archivo {
     }
   }
   
+  /**
+   * Método encargado de devolver la un objeto de tipo archivo en cadena de texto
+   * 
+   * @return Una cadena de texto
+   */
   @Override
   public String toString() {
     String info = "Nombre del archivo: " + nombre + "\n";

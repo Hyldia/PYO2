@@ -11,7 +11,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import logicadenegocios.UnidadLogica;
 import logicadenegocios.Archivo;
-import logicadenegocios.Directorio;
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.io.*;
@@ -25,12 +24,10 @@ public class Controlador {
 
   private UnidadLogica unidadLogica;
   private Archivo archivo;
-  private Directorio directorio;
 
   public Controlador() {
     unidadLogica = new UnidadLogica();
     archivo = new Archivo();
-    directorio = new Directorio();
 
   }
 
@@ -59,7 +56,7 @@ public class Controlador {
 
   /**
    * Método encargado de el archivo que ha sido elegido por el usuario
-   * 
+   *
    * @param rutaArchivo
    */
   public void abrirArchivo(String rutaArchivo) {
@@ -71,12 +68,13 @@ public class Controlador {
          "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
+
   /**
    * Método encargado de consultar la información de un archivo seleccionado
-   * 
+   *
    * @param rutaArchivo
    * @return La informacion del archivo
-   * @throws IOException 
+   * @throws IOException
    */
   public String consultarInfoArchivo(String rutaArchivo) throws IOException {
     if (rutaArchivo == null || rutaArchivo.isEmpty()) {
@@ -122,9 +120,10 @@ public class Controlador {
 
   /**
    * étodo encargado de consultar la información de un directorio seleccionado
+   *
    * @param rutaDirectorio
    * @return La información del directorio
-   * @throws IOException 
+   * @throws IOException
    */
   public String consultarinfoDirectorio(String rutaDirectorio)
      throws IOException {
@@ -180,7 +179,7 @@ public class Controlador {
 
   /**
    * Método encargado de calcular el tamaño de un directorio
-   * 
+   *
    * @param directorio
    * @return El tamaño total del diectorio
    */
@@ -203,10 +202,10 @@ public class Controlador {
 
   /**
    * Método encargado de copiar la informacion de un directorio a otro
-   * 
+   *
    * @param rutaOrigen
    * @param rutaDestino
-   * @throws IOException 
+   * @throws IOException
    */
   public void copiarDirectorio(String rutaOrigen, String rutaDestino)
      throws IOException {
@@ -241,10 +240,10 @@ public class Controlador {
 
   /**
    * Método encargado de copiar la informacion de un archivo a otro
-   * 
+   *
    * @param archivoOrigen
    * @param archivoDestino
-   * @throws IOException 
+   * @throws IOException
    */
   public void copiarArchivo(String archivoOrigen, String archivoDestino)
      throws IOException {
@@ -271,7 +270,7 @@ public class Controlador {
     }
 
     // Copiar el archivo de origen al destino
-    try (InputStream in = new FileInputStream(archivoOrigen); OutputStream out 
+    try (InputStream in = new FileInputStream(archivoOrigen); OutputStream out
        = new FileOutputStream(archivoDestino)) {
 
       byte[] buffer = new byte[1024];

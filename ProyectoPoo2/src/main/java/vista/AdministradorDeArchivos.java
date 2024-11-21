@@ -27,10 +27,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 /**
- *
- * @author deywe
+ * Clase que representa la abstracción de un administrador de archivos
+ * 
+ * @author Hyldia T., Berenice A. & Deywenie S.
  */
-public class AbrirDirectorio extends javax.swing.JFrame {
+public class AdministradorDeArchivos extends javax.swing.JFrame {
 
   private Controlador controlador;
   private File directorioActual;
@@ -42,7 +43,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
   /**
    * Creates new form AbrirDirectorio
    */
-  public AbrirDirectorio() {
+  public AdministradorDeArchivos() {
     initComponents();
     setResizable(false);
     controlador = new Controlador();
@@ -74,7 +75,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
               try {
                 cambiarDirectorio(new File(directorioActual, nombre));
               } catch (Exception ex) {
-                Logger.getLogger(AbrirDirectorio.class.getName()
+                Logger.getLogger(AdministradorDeArchivos.class.getName()
                 ).log(Level.SEVERE, null, ex);
               }
             }
@@ -94,7 +95,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             try {
               ordenarPorTamaño();
             } catch (Exception ex) {
-              Logger.getLogger(AbrirDirectorio.class.getName()).log(
+              Logger.getLogger(AdministradorDeArchivos.class.getName()).log(
                  Level.SEVERE, null, ex);
             }
           }
@@ -102,7 +103,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             try {
               ordenarPorFechaDeCreacion();
             } catch (Exception ex) {
-              Logger.getLogger(AbrirDirectorio.class.getName()
+              Logger.getLogger(AdministradorDeArchivos.class.getName()
               ).log(Level.SEVERE, null, ex);
             }
           }
@@ -523,7 +524,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
               copiar.setEnabled(false);
             }
           } catch (IOException ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+            Logger.getLogger(AdministradorDeArchivos.class.getName()).log(
                Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al copiar el archivo"
                + "o directorio.",
@@ -559,7 +560,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       try {
         cambiarDirectorio(directorio);
       } catch (Exception ex) {
-        Logger.getLogger(AbrirDirectorio.class.getName()).log(Level.SEVERE, 
+        Logger.getLogger(AdministradorDeArchivos.class.getName()).log(Level.SEVERE, 
            "Error al cambiar directorio", ex);
       }
     } else {
@@ -626,7 +627,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, mensaje,
                "Información del Archivo", JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+            Logger.getLogger(AdministradorDeArchivos.class.getName()).log(
                Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this,
                "Error al obtener información del archivo.",
@@ -639,7 +640,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, mensaje,
                "Información del Directorio", JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+            Logger.getLogger(AdministradorDeArchivos.class.getName()).log(
                Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                this, "Error al obtener información del directorio.",
@@ -690,7 +691,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
           try {
             cambiarDirectorio(directorio);
           } catch (Exception ex) {
-            Logger.getLogger(AbrirDirectorio.class.getName()).log(
+            Logger.getLogger(AdministradorDeArchivos.class.getName()).log(
                Level.SEVERE, null, ex);
           }
           break;
@@ -709,7 +710,7 @@ public class AbrirDirectorio extends javax.swing.JFrame {
       try {
         cambiarDirectorio(directorioActual.getParentFile());
       } catch (Exception ex) {
-        Logger.getLogger(AbrirDirectorio.class.getName()
+        Logger.getLogger(AdministradorDeArchivos.class.getName()
         ).log(Level.SEVERE, null, ex);
       }
     }
@@ -797,20 +798,21 @@ public class AbrirDirectorio extends javax.swing.JFrame {
         }
       }
     } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(AbrirDirectorio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(AdministradorDeArchivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(AbrirDirectorio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(AdministradorDeArchivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(AbrirDirectorio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(AdministradorDeArchivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(AbrirDirectorio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(AdministradorDeArchivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
     //</editor-fold>
 
     /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
-        new AbrirDirectorio().setVisible(true);
+        new AdministradorDeArchivos().setVisible(true);
       }
     });
   }
