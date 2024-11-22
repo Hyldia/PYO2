@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Clase que representa la abstracción de una Unidad Lógica
  *
- * @author Hyldia T., Berenice A. & Deywenie S.
+ * @author Hyldia T., Berenice A. y Deywenie S.
  */
 public class UnidadLogica {
 
@@ -35,7 +35,7 @@ public class UnidadLogica {
   /**
    * Convierte de bytes a gigabytes
    *
-   * @param bytes
+   * @param bytes el tamaño del archivo/directorio en bytes
    * @return El equivalente en gigabytes
    */
   public static double bytesAGigabytes(long bytes) {
@@ -45,7 +45,7 @@ public class UnidadLogica {
   /**
    * Formatea los bytes en grupos de tres con espacios como separadores.
    *
-   * @param bytes
+   * @param bytes el tamaño del archivo/directorio en bytes
    * @return Los bytes formateados con separadores de espacios
    */
   public static String formaBytes(long bytes) {
@@ -56,7 +56,7 @@ public class UnidadLogica {
   /**
    * Obtiene el contenido del direcctorio especificado si no De la unidad C:
    *
-   * @param pRuta
+   * @param pRuta ruta de la unidad lógica seleccionada
    * @return La lista de nombres de los archivos y directorios
    */
   public List<String> getContenido(String pRuta) {

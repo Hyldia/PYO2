@@ -5,8 +5,9 @@
 package vista;
 
 /**
- *
- * @author Usuario
+ * Clase encargada de mostrar el menú principal
+ * 
+ * @author Hyldia T., Berenice A. y Deywenie S.
  */
 public class Inicio extends javax.swing.JFrame {
 

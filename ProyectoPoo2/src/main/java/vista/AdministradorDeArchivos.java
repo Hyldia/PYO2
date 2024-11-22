@@ -28,8 +28,8 @@ import javax.swing.table.TableRowSorter;
 
 /**
  * Clase que representa la abstracción de un administrador de archivos
- * 
- * @author Hyldia T., Berenice A. & Deywenie S.
+ *
+ * @author Hyldia T., Berenice A. y Deywenie S.
  */
 public class AdministradorDeArchivos extends javax.swing.JFrame {
 
@@ -41,7 +41,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
   private TableRowSorter<DefaultTableModel> sorter;
 
   /**
-   * Creates new form AbrirDirectorio
+   * Constructor de la clase de AdministradorDeArchivos
    */
   public AdministradorDeArchivos() {
     initComponents();
@@ -117,6 +117,11 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     comboBox.setSelectedIndex(0);
   }
 
+  /**
+   * Ordena la tabla por medio de la columna "Tamaño" en forma númerica
+   *
+   * @throws Exception si ocurre un error al momento de convertir los tamaños
+   */
   public final void ordenarPorTamaño() throws Exception {
     int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
        "Tamaño");
@@ -127,6 +132,12 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     });
   }
 
+  /**
+   * Convierte una cadena de texto en un double
+   *
+   * @param pTamaño la cadena de texto con el tamaño a convertir
+   * @return el tamaño en double o 0 si hubo un error
+   */
   private double tamañoEnDouble(String pTamaño) {
     try {
       String numero = pTamaño.replaceAll("[^0-9.]", "");
@@ -136,6 +147,12 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     }
   }
 
+  /**
+   * Ordena la tabla por medio de la columna "Fecha de Creación" en orden con
+   * las fechas
+   *
+   * @throws Exception si ocurre un error a la hora de comparar las fechas
+   */
   private void ordenarPorFechaDeCreacion() throws Exception {
     int indice = tablaDeArchivos.getColumnModel().getColumnIndex(
        "Fecha de Creación");
@@ -148,6 +165,10 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     });
   }
 
+  /**
+   * Método encargado de listar las unidades lógicas de la computadora
+   *
+   */
   public final void listarUnidadesLogicas() {
     archivos = controlador.listarUnidadesLogicas();
     for (File archivo : archivos) {
@@ -163,8 +184,13 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     }
   }
 
+  /**
+   * Se encarga de cambiar los directorios mostrados en la interfaz gráfica
+   *
+   * @param pNuevoDirectorio la ruta del directorio a mostrar
+   * @throws Exception si el directorio se encuentra vacío
+   */
   public final void cambiarDirectorio(File pNuevoDirectorio) throws Exception {
-    // No BORRAR LOS MODELOS
     if (pNuevoDirectorio.isDirectory()) {
       directorioActual = pNuevoDirectorio;
       modelo.setRowCount(0);
@@ -190,6 +216,14 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     }
   }
 
+  /**
+   * Se encarga de validar el nombre del directorio a crear. Valida que el
+   * nombre no posea caracteres especiales ni que su largo sea mayor a 64
+   * caracteres.
+   *
+   * @param pPalabra el nombre que se le desea dar al nuevo directorio
+   * @return true si se cumple con la condicion, false de lo contrario
+   */
   public final boolean validarPalabra(String pPalabra) {
     String regex = "^[A-Za-z0-9]{1,64}$";
     Pattern patron = Pattern.compile(regex);
@@ -507,8 +541,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
             // Si el origen es un archivo
             if (archivoOrigen.isFile()) {
               controlador.copiarArchivo(archivoOrigen.getAbsolutePath(),
-                 new File(directorioDestino, archivoOrigen.getName(
-                 )).getAbsolutePath());
+                 new File(directorioDestino, archivoOrigen.getName()).getAbsolutePath());
               JOptionPane.showMessageDialog(this, "El archivo fue "
                  + "copiado exitosamente.",
                  "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -516,8 +549,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
             } // Si el origen es un directorio
             else if (archivoOrigen.isDirectory()) {
               controlador.copiarDirectorio(archivoOrigen.getAbsolutePath(),
-                 new File(directorioDestino, archivoOrigen.getName(
-                 )).getAbsolutePath());
+                 new File(directorioDestino, archivoOrigen.getName()).getAbsolutePath());
               JOptionPane.showMessageDialog(this, "El directorio fue "
                  + "copiado exitosamente.",
                  "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -548,19 +580,17 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_copiarActionPerformed
 
-  //// Solo se elimina el archivo de la tabla NO de la compu
   private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
     int fila = tablaDeArchivos.getSelectedRow();
     System.out.println("Fila: " + fila);
     if (fila >= 0) {
-      String nombreArchivo = tablaDeArchivos.getModel().getValueAt(
-         fila, 1).toString();
+      String nombreArchivo = (String) tablaDeArchivos.getValueAt(fila, 1);
       borrarArchivo(nombreArchivo);
       File directorio = directorioActual;
       try {
         cambiarDirectorio(directorio);
       } catch (Exception ex) {
-        Logger.getLogger(AdministradorDeArchivos.class.getName()).log(Level.SEVERE, 
+        Logger.getLogger(AdministradorDeArchivos.class.getName()).log(Level.SEVERE,
            "Error al cambiar directorio", ex);
       }
     } else {
@@ -571,45 +601,35 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
 
   }//GEN-LAST:event_eliminarActionPerformed
 
+  /**
+   * Método encargado de borrar el archivo/directorio seleccionado
+   *
+   * @param pArchivo el nombre del archivo/directorio
+   */
   private void borrarArchivo(String pArchivo) {
     File archivoSeleccionado = new File(directorioActual, pArchivo);
-    System.out.println("Archivo: " + archivoSeleccionado);
-    if (archivoSeleccionado.exists()) {
-      if (archivoSeleccionado.isDirectory()) {
-        borrarDirectorio(archivoSeleccionado);
-        JOptionPane.showMessageDialog(this, 
-           "El directorio fue eliminado exitosamente.",
-           "Información", JOptionPane.INFORMATION_MESSAGE);
-      } else {
-        if (archivoSeleccionado.delete()) {
-          JOptionPane.showMessageDialog(this, 
-             "El archivo fue eliminado exitosamente.",
+    if (controlador.borrarArchivo(directorioActual, pArchivo)) {
+      System.out.println("Archivo: " + archivoSeleccionado);
+      if (!archivoSeleccionado.exists()) {
+        if (archivoSeleccionado.isDirectory()) {
+          JOptionPane.showMessageDialog(this,
+             "El directorio fue eliminado exitosamente.",
              "Información", JOptionPane.INFORMATION_MESSAGE);
         } else {
-          JOptionPane.showMessageDialog(this, 
-             "El archivo no pudo ser eliminado.",
-             "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(this,
+             "El archivo fue eliminado exitosamente.",
+             "Información", JOptionPane.INFORMATION_MESSAGE);
         }
+      } else {
+        JOptionPane.showMessageDialog(this,
+           "El archivo o directorio no pudo ser eliminado.",
+           "Error", JOptionPane.ERROR_MESSAGE);
       }
     } else {
-      JOptionPane.showMessageDialog(this, 
-         "El archivo o directorio no existe.",
+      JOptionPane.showMessageDialog(this,
+         "Hubo un problema al intentar eliminar el archivo o directorio.",
          "Error", JOptionPane.ERROR_MESSAGE);
     }
-  }
-
-  private void borrarDirectorio(File pDirectorio) {
-    File[] archivosBorrar = pDirectorio.listFiles();
-    if (archivosBorrar != null) {
-      for (File archivo : archivosBorrar) {
-        if (archivo.isDirectory()) {
-          borrarDirectorio(archivo);
-        } else {
-          archivo.delete();
-        }
-      }
-    }
-    pDirectorio.delete();
   }
 
   private void consultarInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarInfoActionPerformed
@@ -747,6 +767,9 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_selectionActionPerformed
 
+  /**
+   * Se encarga de actualizar el label donde se muestra la ruta actual
+   */
   private void mostrarRuta() {
     int largo = 60;
     String ruta = directorioActual.getPath();
@@ -757,6 +780,10 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
 
   }
 
+  /**
+   * Clase encargada de mostrar los iconos de los archivos y directorios
+   *
+   */
   class FileTypeRenderer extends JLabel implements TableCellRenderer {
 
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();

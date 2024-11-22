@@ -18,7 +18,7 @@ import java.io.*;
 /**
  * Clase que representa la abstracción de un Controlador
  *
- * @author Hyldia T., Berenice A. & Deywenie S.
+ * @author Hyldia T., Berenice A. y Deywenie S.
  */
 public class Controlador {
 
@@ -35,9 +35,9 @@ public class Controlador {
   /**
    * Método encargado de conseguir los archivos de la unidad lógica C
    *
-   * @param pDirectorio
+   * @param pDirectorio la ruta de la unidad lógica
    * @return Un arreglo con los archivos
-   * @throws Exception
+   * @throws Exception si alguno de los directorios presente una ruta inválida
    */
   public File[] conseguirListaArchivos(File pDirectorio) throws Exception {
     if (pDirectorio == null) {
@@ -57,7 +57,7 @@ public class Controlador {
   /**
    * Método encargado de el archivo que ha sido elegido por el usuario
    *
-   * @param rutaArchivo
+   * @param rutaArchivo la ruta del archivo que se desea abrir
    */
   public void abrirArchivo(String rutaArchivo) {
     try {
@@ -72,9 +72,9 @@ public class Controlador {
   /**
    * Método encargado de consultar la información de un archivo seleccionado
    *
-   * @param rutaArchivo
+   * @param rutaArchivo ruta del archivo que se desea consultar la información
    * @return La informacion del archivo
-   * @throws IOException
+   * @throws IOException si la ruta del archivo no es válido o no existe
    */
   public String consultarInfoArchivo(String rutaArchivo) throws IOException {
     if (rutaArchivo == null || rutaArchivo.isEmpty()) {
@@ -119,11 +119,13 @@ public class Controlador {
   }
 
   /**
-   * étodo encargado de consultar la información de un directorio seleccionado
+   * Consulta la información de un directorio seleccionado.
    *
-   * @param rutaDirectorio
-   * @return La información del directorio
-   * @throws IOException
+   * @param rutaDirectorio la ruta del directorio del cual se desea obtener
+   * información.
+   * @return la información del directorio como una cadena de texto.
+   * @throws IOException si la ruta del directorio no es válida o no se puede
+   * acceder al directorio.
    */
   public String consultarinfoDirectorio(String rutaDirectorio)
      throws IOException {
@@ -178,10 +180,10 @@ public class Controlador {
   }
 
   /**
-   * Método encargado de calcular el tamaño de un directorio
+   * Calcula el tamaño total de un directorio especificado.
    *
-   * @param directorio
-   * @return El tamaño total del diectorio
+   * @param directorio el directorio del cual se desea calcular el tamaño.
+   * @return el tamaño total del directorio en bytes.
    */
   private long calcularTamañoDirectorio(File directorio) {
     long tamañoTotal = 0;
@@ -201,11 +203,13 @@ public class Controlador {
   }
 
   /**
-   * Método encargado de copiar la informacion de un directorio a otro
+   * Copia la información de un directorio a otro.
    *
-   * @param rutaOrigen
-   * @param rutaDestino
-   * @throws IOException
+   * @param rutaOrigen la ruta del directorio de origen cuya información se
+   * desea copiar.
+   * @param rutaDestino la ruta del directorio de destino donde se copiará la
+   * información.
+   * @throws IOException si ocurre un error durante el proceso de copia
    */
   public void copiarDirectorio(String rutaOrigen, String rutaDestino)
      throws IOException {
@@ -239,11 +243,13 @@ public class Controlador {
   }
 
   /**
-   * Método encargado de copiar la informacion de un archivo a otro
+   * Copia la información de un archivo a otro.
    *
-   * @param archivoOrigen
-   * @param archivoDestino
-   * @throws IOException
+   * @param archivoOrigen la ruta del archivo de origen cuya información se
+   * desea copiar.
+   * @param archivoDestino la ruta del archivo de destino donde se copiará la
+   * información.
+   * @throws IOException si ocurre un error durante el proceso de copia
    */
   public void copiarArchivo(String archivoOrigen, String archivoDestino)
      throws IOException {
@@ -282,6 +288,48 @@ public class Controlador {
       // Captura y muestra errores detallados si ocurre algún fallo al leer o escribir
       throw new IOException("Error al copiar el archivo: " + e.getMessage());
     }
+  }
+
+  /**
+   * Se encarga de eliminar un archivo
+   *
+   * @param pDirectorio la ruta del directorio donde se encuentra el archivo
+   * @param pArchivo el nom,bre del archivo
+   * @return true si el archivo fue eliminado, false de lo contrario
+   */
+  public boolean borrarArchivo(File pDirectorio, String pArchivo) {
+    File archivoSeleccionado = new File(pDirectorio, pArchivo);
+    if (archivoSeleccionado.exists()) {
+      if (archivoSeleccionado.isDirectory()) {
+        return borrarDirectorio(archivoSeleccionado);
+      } else {
+        if (archivoSeleccionado.delete()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Se encarga de eliminar un directorio
+   *
+   * @param pDirectorio la ruta del directorio que se desea eliminar
+   * @return false si el archivo existe, true de lo contrario
+   */
+  public boolean borrarDirectorio(File pDirectorio) {
+    File[] archivosBorrar = pDirectorio.listFiles();
+    if (archivosBorrar != null) {
+      for (File archivo : archivosBorrar) {
+        if (archivo.isDirectory()) {
+          borrarDirectorio(archivo);
+        } else {
+          archivo.delete();
+        }
+      }
+    }
+    pDirectorio.delete();
+    return !pDirectorio.exists();
   }
 
   // Unidad Lógica

@@ -12,27 +12,29 @@ import java.time.LocalDate;
 
 /**
  * Clase que representa la abstracción de un Archivo
- * 
- * @author Hyldia T., Berenice A. & Deywenie S.
+ *
+ * @author Hyldia T., Berenice A. y Deywenie S.
  */
 public class Archivo {
+
   private String nombre;
   private String ruta;
   private String tipo;
   private LocalDate fechaCreacion;
-  
+
   /**
    * Método constructor de la clase Archivo
    */
-  public Archivo () {
-    
+  public Archivo() {
+
   }
-  
+
   /**
    * Método encargado de copiar un archivo a otro
-   * 
-   * @param pRutaDestino
-   * @throws IOException 
+   *
+   * @param pRutaDestino ruta del archivo de destino
+   * @throws IOException si el archivo no ha sido encontrado o no se ha podido
+   * acceder a este
    */
   public void copiarArchivo(String pRutaDestino) throws IOException {
     File archivo = new File(ruta);
@@ -42,34 +44,36 @@ public class Archivo {
 
   /**
    * Método encargado de abrir el archivo seleccionado por el usuario
-   * 
-   * @param ruta
-   * @throws IOException 
+   *
+   * @param ruta ruta del archivo que se desea abrir
+   * @throws IOException si el archivo no ha sido encontrado o no se ha podido
+   * acceder a este
    */
   public void abrirArchivo(String ruta) throws IOException {
     if (Desktop.isDesktopSupported()) {
       Desktop desktop = Desktop.getDesktop();
       File archivo = new File(ruta);
-      
+
       if (archivo.exists()) {
         try {
           desktop.open(archivo);
-        }catch (IOException e){
+        } catch (IOException e) {
           throw new IOException("No se puede abrir el archivo por un error en "
              + "el sistema.");
         }
-      }else {
+      } else {
         throw new IOException("El archivo no existe en la ruta dada.");
       }
-    }else {
+    } else {
       throw new IOException("El sistema no soporta abrir el archivo "
          + "seleccionado");
     }
   }
-  
+
   /**
-   * Método encargado de devolver la un objeto de tipo archivo en cadena de texto
-   * 
+   * Método encargado de devolver la un objeto de tipo archivo en cadena de
+   * texto
+   *
    * @return Una cadena de texto
    */
   @Override
