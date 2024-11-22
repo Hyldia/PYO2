@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"vista","l":"AdministradorDeArchivos"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"logicadenegocios","l":"Archivo"},{"p":"controlador","l":"Controlador"},{"p":"vista","l":"Inicio"},{"p":"logicadenegocios","l":"UnidadLogica"}];updateSearchResults();
