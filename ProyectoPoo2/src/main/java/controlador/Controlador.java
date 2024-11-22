@@ -247,14 +247,14 @@ public class Controlador {
    *
    * @param archivoOrigen la ruta del archivo de origen cuya información se
    * desea copiar.
-   * @param archivoDestino la ruta del archivo de destino donde se copiará la
+   * @param pDirectorioDestino la ruta del directorio de destino donde se copiará la
    * información.
    * @throws IOException si ocurre un error durante el proceso de copia
    */
-  public void copiarArchivo(String archivoOrigen, String archivoDestino)
+  public void copiarArchivo(String archivoOrigen, String pDirectorioDestino)
      throws IOException {
     File archivoOrigenFile = new File(archivoOrigen);
-    File archivoDestinoFile = new File(archivoDestino);
+    File archivoDestinoFile = new File(pDirectorioDestino);
 
     if (!archivoOrigenFile.exists()) {
       throw new IOException("El archivo de origen no existe: " + archivoOrigen);
@@ -272,12 +272,12 @@ public class Controlador {
     // Verifica si el archivo de destino ya existe
     if (archivoDestinoFile.exists()) {
       throw new IOException("El archivo de destino ya existe: "
-         + archivoDestino);
+         + pDirectorioDestino);
     }
 
     // Copiar el archivo de origen al destino
     try (InputStream in = new FileInputStream(archivoOrigen); OutputStream out
-       = new FileOutputStream(archivoDestino)) {
+       = new FileOutputStream(pDirectorioDestino)) {
 
       byte[] buffer = new byte[1024];
       int longitud;

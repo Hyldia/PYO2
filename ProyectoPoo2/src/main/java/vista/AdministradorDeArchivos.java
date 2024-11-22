@@ -320,7 +320,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     });
 
     copiar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-    copiar.setText("Copiar");
+    copiar.setText("Pegar");
     copiar.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         copiarActionPerformed(evt);
@@ -362,7 +362,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
     labelRuta.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
     selection.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-    selection.setText("Selección a copiar");
+    selection.setText("Copiar");
     selection.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         selectionActionPerformed(evt);
@@ -385,7 +385,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
             .addComponent(botonRetroceder)))
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(18, 18, Short.MAX_VALUE)
             .addComponent(salir)
             .addGap(110, 110, 110))
           .addGroup(jPanel1Layout.createSequentialGroup()
@@ -395,8 +395,7 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(consultarPropiedades)
-                    .addComponent(jLabel2)
-                    .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2))
                   .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(14, 14, 14)
                     .addComponent(consultarInfo))))
@@ -408,13 +407,14 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
               .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(102, 102, 102)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(eliminar)
-                  .addComponent(copiar)))
+                  .addComponent(copiar)
+                  .addComponent(selection)
+                  .addComponent(eliminar)))
               .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(83, 83, 83)
+                .addGap(85, 85, 85)
                 .addComponent(abrirArchivo))
               .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
+                .addGap(75, 75, 75)
                 .addComponent(crearDirectorio)))
             .addContainerGap(70, Short.MAX_VALUE))))
     );
@@ -442,13 +442,13 @@ public class AdministradorDeArchivos extends javax.swing.JFrame {
         .addGap(18, 18, 18)
         .addComponent(copiar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
+        .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(abrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(crearDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
-        .addComponent(selection, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(consultarInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
