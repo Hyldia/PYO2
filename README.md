@@ -2,5 +2,5 @@
 Segundo proyecto programable
 ### Blogs Individuales
 - Berenice Amador:
-- Deywenie Smith: https://www.blogger.com/blog/posts/4157178919372416578 
+- Deywenie Smith: https://proyecto2poodeywenies.blogspot.com/2024/11/
 - Hydia Thomas:
