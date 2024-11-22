@@ -35,7 +35,7 @@ public class UnidadLogica {
   /**
    * Convierte de bytes a gigabytes
    *
-   * @param bytes el tamaño del archivo/directorio en bytes
+   * @param bytes el tamaño del archivo, directorio o la unidad lógica en bytes
    * @return El equivalente en gigabytes
    */
   public static double bytesAGigabytes(long bytes) {
@@ -45,7 +45,7 @@ public class UnidadLogica {
   /**
    * Formatea los bytes en grupos de tres con espacios como separadores.
    *
-   * @param bytes el tamaño del archivo/directorio en bytes
+   * @param bytes el tamaño del archivo, directorio o la unidad lógica en bytes
    * @return Los bytes formateados con separadores de espacios
    */
   public static String formaBytes(long bytes) {

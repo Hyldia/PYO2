@@ -55,7 +55,7 @@ public class Controlador {
   }
 
   /**
-   * Método encargado de el archivo que ha sido elegido por el usuario
+   * Método encargado de el archivo seleccionado en su aplicación padre
    *
    * @param rutaArchivo la ruta del archivo que se desea abrir
    */
@@ -203,7 +203,7 @@ public class Controlador {
   }
 
   /**
-   * Copia la información de un directorio a otro.
+   * Copia la información de un del directorio origen al directorio destino.
    *
    * @param rutaOrigen la ruta del directorio de origen cuya información se
    * desea copiar.
@@ -243,7 +243,7 @@ public class Controlador {
   }
 
   /**
-   * Copia la información de un archivo a otro.
+   * Copia la información de un del archvio origen al archivo destino.
    *
    * @param archivoOrigen la ruta del archivo de origen cuya información se
    * desea copiar.
